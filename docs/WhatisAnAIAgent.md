@@ -79,62 +79,84 @@ feedback (Observation) steps. The loop operates as follows:
 
 The ReAct pattern is significant because it makes the agent's reasoning process explicit and inspectable. Unlike chain-of-thought prompting alone (which remains internal to the model), the action-observation interleaving grounds each reasoning step in empirical feedback from the environment, mitigating hallucination and enabling adaptive multi-step problem-solving.
 
-  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  > [!IMPORTANT} **📌 Connection to Classic Agent Theory:** The Thought--Action--Observation loop maps directly onto the perception--deliberation--action cycle described in classical agent architectures (Section 2). The "Observation" phase corresponds to Wooldridge & Jennings' notion of an agent "perceiving its environment"; the "Thought" phase to deliberative reasoning; the "Action" phase to pro-active goal-directed behaviour.
-  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**1.4 Modern Agent Infrastructure: LangGraph**
+> [!IMPORTANT]
+> **📌 Connection to Classic Agent Theory:** The Thought--Action--Observation loop maps directly onto the perception--deliberation--action cycle described in classical
+> agent architectures (Section 2). The "Observation" phase corresponds to Wooldridge & Jennings' notion of an agent "perceiving its environment"; the "Thought" phase to deliberative reasoning;
+> the "Action" phase to pro-active goal-directed behaviour.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+### 1.4 Modern Agent Infrastructure: LangGraph
 
 As agent systems scale in complexity, a simple linear ReAct loop becomes insufficient. LangChain addresses this by introducing LangGraph, a graph-based orchestration framework that models agent workflows as directed graphs. Each node in the graph represents an agent, a processing step, or a decision point; edges represent control flow conditioned on the outputs of preceding nodes.
 
 LangGraph supports conditional branching, parallel execution of agent sub-tasks, and stateful persistence across graph traversal steps. It also integrates natively with the Model Context Protocol (MCP), a standardised interface for connecting agents to external tool providers and data sources. Because of this modularity and production-readiness, LangGraph is now the recommended framework for building enterprise-grade AI agents within the LangChain ecosystem.
 
-  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **LangGraph vs. Simple Agent:** A simple ReAct agent is a single LLM in a loop. A LangGraph agent is a network of nodes (each potentially an LLM, a tool, or another sub-agent) with explicit state, conditional branching, and controllable human-in-the-loop checkpoints. LangGraph is the production-grade evolution of the original LangChain agent abstraction.
-  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> [!NOTE]
+> **LangGraph vs. Simple Agent:** A simple ReAct agent is a single LLM in a loop. A LangGraph agent is a network of nodes (each potentially an LLM, a tool, or another sub-agent) with explicit state,
+> conditional branching, and controllable human-in-the-loop checkpoints. LangGraph is the production-grade evolution of the original LangChain agent abstraction.
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**1.5 Agents vs. Chains: A Comparative Summary**
+### 1.5 Agents vs. Chains: A Comparative Summary
 
   ----------------- -------------------------------------- ----------------------------------------
-  **Dimension**     **Chain**                              **Agent**
-  Control flow      Developer-specified at design time     LLM-determined at run time
-  Tool selection    Fixed (no tool selection needed)       Dynamic, based on model reasoning
-  Iteration         Single forward pass                    Multi-step loop until goal met
-  Flexibility       High predictability, low flexibility   Lower predictability, high flexibility
-  Best suited for   Well-defined, structured tasks         Open-ended, multi-step tasks
+  
+  | **Dimension**  |   **Chain**     |                         **Agent** |
+  | :-- | :-- | :-- |
+  |Control flow   |   Developer-specified at design time  |   LLM-determined at run time |
+  | Tool selection  |  Fixed (no tool selection needed)  |     Dynamic, based on model reasoning |
+  | Iteration      |   Single forward pass          |          Multi-step loop until goal met |
+  | Flexibility    |    High predictability, low flexibility  |  Lower predictability, high flexibility |
+  | Best suited for |  Well-defined, structured tasks    |     Open-ended, multi-step tasks |
+  
   ----------------- -------------------------------------- ----------------------------------------
 
-**Section 2: Annotated Excerpt**
+## Section 2: Annotated Excerpt
 
 *Wooldridge, M. & Jennings, N. R. (1995). Intelligent agents: Theory and practice. The Knowledge Engineering Review, 10*(2), 115--152.
 
-**How to use this excerpt:** The original text appears in normal type; instructor annotations appear in the shaded boxes labelled with 📌 icons. Annotations connect the 1995 theoretical vocabulary to contemporary AI systems and course themes.
+> [!NOTE]
+> **How to use this excerpt:** The original text appears in normal type; instructor annotations appear in the shaded boxes labelled with 📌 icons.
+> Annotations connect the 1995 theoretical vocabulary to contemporary AI systems and course themes.
 
-**2.1 Introduction: The Agent Concept in AI**
+### 2.1 Introduction: The Agent Concept in AI
 
 The concept of an agent has become important in both artificial intelligence (AI) and mainstream computer science. Our aim in this paper is to point the reader at what we perceive to be the most important theoretical and practical issues associated with the design and construction of intelligent agents. Agent theory is concerned with the question of what an agent is, and the use of mathematical formalisms for representing and reasoning about the properties of agents. Agent architectures can be thought of as software engineering models of agents; researchers in this area are primarily concerned with the problem of designing software or hardware systems that will satisfy the properties specified by agent theorists. Finally, agent languages are software systems for programming and experimenting with agents; these may embody principles proposed by theorists.
 
-  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **📌 Annotation: The Three-Layer Framework:** Wooldridge & Jennings organise agent research into three mutually reinforcing layers: (1) theory (formal properties and logic), (2) architectures (engineering implementations), and (3) languages (programming abstractions). This taxonomy remains foundational today. Modern frameworks such as LangChain and LangGraph correspond primarily to the architecture and language layers, while the theoretical layer is addressed by research in BDI logic, game-theoretic decision theory, and reinforcement learning.
-  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> [!NOTE]
+> **📌 Annotation: The Three-Layer Framework:** Wooldridge & Jennings organise agent research into three mutually reinforcing layers: (1) theory (formal properties and logic),
+> (2) architectures (engineering implementations), and (3) languages (programming abstractions). This taxonomy remains foundational today. Modern frameworks such as LangChain
+> and LangGraph correspond primarily to the architecture and language layers, while the theoretical layer is addressed by research in BDI logic, game-theoretic decision theory,
+> and reinforcement learning.
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**2.2 The Weak Notion of Agency: Four Core Properties**
+### 2.2 The Weak Notion of Agency: Four Core Properties
 
 Perhaps the most general way in which the term "agent" is used is to denote a hardware or (more usually) software-based computer system that enjoys the following properties:
 
-  -------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **Property**         **Definition (Wooldridge & Jennings, 1995, p. 116)**
-  **Autonomy**         Agents operate without the direct intervention of humans or others, and have some kind of control over their actions and internal state (Castelfranchi, 1995).
-  **Social Ability**   Agents interact with other agents (and possibly humans) via some kind of agent-communication language (Genesereth & Ketchpel, 1994).
-  **Reactivity**       Agents perceive their environment (which may be the physical world, a user via a graphical interface, a collection of other agents, the Internet, or all of these combined) and respond in a timely fashion to changes that occur in it.
-  **Pro-activeness**   Agents do not simply act in response to their environment; they are able to exhibit goal-directed behaviour by taking the initiative.
-  -------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **📌 Annotation: Mapping to LLM Agents:** These four properties map directly onto the design goals of modern LLM-based agents: Autonomy → the agent acts without step-by-step human instruction (ReAct loop without human intervention); Social Ability → multi-agent systems communicate via shared message formats (e.g., LangChain messages, OpenAI function-call JSON); Reactivity → the agent's tool-call results inform its next action (the Observation step); Pro-activeness → the agent pursues a terminal goal across multiple steps, not merely responding to the most recent input.
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-**2.3 The Stronger Notion: Mentalistic Agency and Rationality**
+  -------------------- -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+ |  **Property**      |    **Definition (Wooldridge & Jennings, 1995, p. 116)** |
+ | :-- | :-- |
+ | **Autonomy**    |     Agents operate without the direct intervention of humans or others, and have some kind of control over their actions and internal state (Castelfranchi, 1995). |
+ | **Social Ability**  | Agents interact with other agents (and possibly humans) via some kind of agent-communication language (Genesereth & Ketchpel, 1994). |
+ | **Reactivity**   |    Agents perceive their environment (which may be the physical world, a user via a graphical interface, a collection of other agents, the Internet, or all of these combined) and respond in a timely fashion to changes that occur in it. |
+ | **Pro-activeness** |  Agents do not simply act in response to their environment; they are able to exhibit goal-directed behaviour by taking the initiative. |
+  -------------------- -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> [!NOTE]
+>   **📌 Annotation: Mapping to LLM Agents:** These four properties map directly onto the design goals of modern LLM-based agents: Autonomy → the agent acts without step-by-step human instruction
+> (ReAct loop without human intervention); Social Ability → multi-agent systems communicate via shared message formats (e.g., LangChain messages, OpenAI function-call JSON);
+> Reactivity → the agent's tool-call results inform its next action (the Observation step); Pro-activeness → the agent pursues a terminal goal across multiple steps, not
+> merely responding to the most recent input.
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+### 2.3 The Stronger Notion: Mentalistic Agency and Rationality
 
 For some researchers---particularly those working in AI---the term "agent" has a stronger and more specific meaning. These researchers generally mean an agent to be a computer system that, in addition to having the properties identified above, is either conceptualised or implemented using concepts that are more usually applied to humans. It is quite common in AI to characterise an agent using mentalistic notions such as knowledge, belief, intention, and obligation (Shoham, 1993).
 
@@ -148,37 +170,54 @@ In addition to the four weak-agency properties, the following attributes are dis
 >
 > **Rationality:** (Crudely) the assumption that an agent will act in order to achieve its goals, and will not act in such a way as to prevent its goals being achieved---at least insofar as its beliefs permit (Galliers, 1988b, pp. 49--54).
 
-  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **📌 Annotation: Rationality in Formal Agent Theory:** The notion of rationality introduced here is a conceptual precursor to the formal BDI (Belief--Desire--Intention) model. In BDI theory (Rao & Georgeff, 1991), a rational agent selects intentions that are consistent with its beliefs about the world and its desires about future states. Rationality does not imply omniscience or perfect reasoning; it only requires that the agent not act against its own goals given what it currently believes. This is a key design constraint for autonomous AI systems: they must be locally rational without requiring global knowledge.
-  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-**2.4 Agents as Intentional Systems**
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> [!NOTE]
+>   **📌 Annotation: Rationality in Formal Agent Theory:** The notion of rationality introduced here is a conceptual precursor to the formal BDI (Belief--Desire--Intention) model.
+> In BDI theory (Rao & Georgeff, 1991), a rational agent selects intentions that are consistent with its beliefs about the world and its desires about future states. Rationality does
+> not imply omniscience or perfect reasoning; it only requires that the agent not act against its own goals given what it currently believes. This is a key design constraint for
+> autonomous AI systems: they must be locally rational without requiring global knowledge.
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+### 2.4 Agents as Intentional Systems
 
 When explaining human activity, it is often useful to make statements such as the following: "Janine took her umbrella because she believed it was going to rain." The attitudes employed in such folk psychological descriptions are called the intentional notions. The philosopher Daniel Dennett coined the term intentional system to describe entities "whose behaviour can be predicted by the method of attributing belief, desires and rational acumen" (Dennett, 1987, p. 49).
 
 An obvious question is whether it is legitimate or useful to attribute beliefs, desires, and so on, to artificial agents. McCarthy, among others, has argued that there are occasions when the intentional stance is appropriate: "To ascribe beliefs, free will, intentions, consciousness, abilities, or wants to a machine is legitimate when such an ascription expresses the same information about the machine that it expresses about a person. It is useful when the ascription helps us understand the structure of the machine, its past or future behaviour, or how to repair or improve it" (McCarthy, 1978).
 
-> *Put crudely, the more we know about a system, the less we need to rely on animistic, intentional explanations of its behaviour. However, with very complex systems, even if a complete, accurate picture of the system's architecture and working is available, a mechanistic, design stance explanation of its behaviour may not be practicable. The intentional notions are thus abstraction tools, which provide us with a convenient and familiar way of describing, explaining, and predicting the behaviour of complex systems.*
+> *Put crudely, the more we know about a system, the less we need to rely on animistic, intentional explanations of its behaviour. However, with very complex systems, even if a complete,
+> accurate picture of the system's architecture and working is available, a mechanistic, design stance explanation of its behaviour may not be practicable. The intentional notions are
+> thus abstraction tools, which provide us with a convenient and familiar way of describing, explaining, and predicting the behaviour of complex systems.*
 
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **📌 Annotation: The Intentional Stance and LLMs:** Dennett's intentional stance is particularly relevant to LLM-based agents, whose internal computations are largely opaque. We routinely say that an LLM "believes" something, "wants" to produce a coherent answer, or "intends" to call a tool---even though the model is, mechanistically, a statistical next-token predictor. Wooldridge & Jennings' justification for the intentional stance provides a rigorous philosophical grounding for this common engineering practice. The stance is useful not because LLMs literally have minds, but because the intentional vocabulary allows us to design, debug, and predict agent behaviour at a tractable level of abstraction.
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-**2.5 Information Attitudes and Pro-Attitudes**
+> [!NOTE]
+>  **📌 Annotation: The Intentional Stance and LLMs:** Dennett's intentional stance is particularly relevant to LLM-based agents, whose internal computations are largely opaque.
+> We routinely say that an LLM "believes" something, "wants" to produce a coherent answer, or "intends" to call a tool---even though the model is, mechanistically, a statistical
+> next-token predictor. Wooldridge & Jennings' justification for the intentional stance provides a rigorous philosophical grounding for this common engineering practice.
+> The stance is useful not because LLMs literally have minds, but because the intentional vocabulary allows us to design, debug, and predict agent behaviour at a tractable level of abstraction.
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+### 2.5 Information Attitudes and Pro-Attitudes
 
 For the purposes of this survey, the two most important categories of intentional attitude are information attitudes and pro-attitudes (Wooldridge & Jennings, 1995, p. 120):
 
-  ------------------------------------------------------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **Category**                                                       **Constituent Attitudes and Significance**
-  **Information Attitudes (what the agent knows about the world)**   Belief: The agent's representation of the current state of the world, which may be incomplete or incorrect. Knowledge: A stronger form of belief, typically assumed to be veridical (true). Formally, if i knows φ, then φ is true.
-  **Pro-Attitudes (what motivates the agent to act)**                Desire: A state of affairs the agent wishes to bring about. Intention: A desire the agent has committed to pursuing---one it actively plans and acts to realise. Obligation: A constraint on the agent's behaviour arising from social or contractual norms. Commitment: The agent's disposition to persist with an intention even when circumstances change.
-  ------------------------------------------------------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  ------------------------------------------------------------------ -------------------------------------------------------------------------------------------------------------------------------------
+  
+|   **Category**                      |                                 **Constituent Attitudes and Significance** |
+| :--   | :-- |
+|  **Information Attitudes (what the agent knows about the world)** |  Belief: The agent's representation of the current state of the world, which may be incomplete or incorrect. Knowledge: A stronger form of belief, typically assumed to be veridical (true). Formally, if i knows φ, then φ is true. |
+|  **Pro-Attitudes (what motivates the agent to act)**         |       Desire: A state of affairs the agent wishes to bring about. Intention: A desire the agent has committed to pursuing---one it actively plans and acts to realise. Obligation: A constraint on the agent's behaviour arising from social or contractual norms. Commitment: The agent's disposition to persist with an intention even when circumstances change. |
+  ------------------------------------------------------------------ -------------------------------------------------------------------------------------------------------------------------------------
 
-  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **📌 Annotation: BDI Architecture:** The information / pro-attitude taxonomy is the theoretical foundation for the BDI (Belief--Desire--Intention) architecture, first formally specified by Rao & Georgeff (1991). BDI remains influential in both academic agent theory and practical systems (PRS, dMARS, JADE, Jason). In LLM agents, beliefs correspond to the model's parametric and retrieved knowledge; desires map onto the user-specified task or system prompt objective; intentions map onto the specific plan or tool-call sequence the agent is currently executing.
-  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-**2.6 Theories of Agency: Representing the Rational Agent**
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> [!NOTE]
+>  **📌 Annotation: BDI Architecture:** The information / pro-attitude taxonomy is the theoretical foundation for the BDI (Belief--Desire--Intention) architecture, first formally
+> specified by Rao & Georgeff (1991). BDI remains influential in both academic agent theory and practical systems (PRS, dMARS, JADE, Jason). In LLM agents, beliefs correspond to
+> the model's parametric and retrieved knowledge; desires map onto the user-specified task or system prompt objective; intentions map onto the specific plan or tool-call
+> sequence the agent is currently executing.
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+### 2.6 Theories of Agency: Representing the Rational Agent
 
 All of the formalisms considered so far have focused on just one aspect of agency. A complete agent theory, expressed in a logic with these properties, must define how the attributes of agency are related. For example, it will need to show how an agent's information and pro-attitudes are related; how an agent's cognitive state changes over time; how the environment affects an agent's cognitive state; and how an agent's information and pro-attitudes lead it to perform actions. Giving a good account of these relationships is the most significant problem faced by agent theorists (Wooldridge & Jennings, 1995, p. 125).
 
@@ -198,27 +237,37 @@ Cohen and Levesque (1990) identified seven properties that must be satisfied by 
 
 7.  Agents need not intend all the expected side effects of their intentions.
 
-  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **📌 Annotation: Intentions and LLM Agent Design:** These seven properties have direct implications for LLM-agent engineering. Property 3 (retry on failure) motivates self-reflection and re-planning loops in agents. Property 2 (non-conflicting intentions) motivates constraint-checking in multi-agent task allocation. Property 7 (no obligation for side effects) informs how agents should handle uncertainty: an agent that books a flight need not intend the environmental impact of the flight as a goal. These properties are also relevant to AI safety: a misaligned agent might violate property 2 by adopting intentions that conflict with human values.
-  ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-**2.7 Autonomy: A Deeper Analysis**
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  > [!NOTE]
+> **📌 Annotation: Intentions and LLM Agent Design:** These seven properties have direct implications for LLM-agent engineering. Property 3 (retry on failure) motivates self-reflection
+> and re-planning loops in agents. Property 2 (non-conflicting intentions) motivates constraint-checking in multi-agent task allocation. Property 7 (no obligation for side effects) informs
+> how agents should handle uncertainty: an agent that books a flight need not intend the environmental impact of the flight as a goal. These properties are also relevant to AI safety:
+> a misaligned agent might violate property 2 by adopting intentions that conflict with human values.
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+### 2.7 Autonomy: A Deeper Analysis
 
 Autonomy, the first of the four weak-agency properties, is the most fundamental and the most contested. At its core, autonomy refers to an agent's ability to determine its own behaviour without direct external instruction. Wooldridge & Jennings situate autonomy along a spectrum that runs from fully corrigible systems (which do exactly what they are told, at every step) to fully autonomous systems (which act entirely on their own judgment, drawing no guidance from external principals).
 
 For practical AI systems, neither extreme is desirable. A fully corrigible agent provides no added cognitive value beyond a simple function call; a fully autonomous agent raises significant safety and alignment concerns. The productive design space therefore lies in what the authors term controlled autonomy: the agent acts on its own initiative within a domain defined by its principal hierarchy (the set of entities whose instructions it is designed to follow), but defers to human oversight on high-stakes or out-of-distribution decisions.
 
-  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **Autonomy Spectrum (Wooldridge & Jennings, 1995 / Extended):** Corrigible (no autonomy) ↔ Supervised Autonomy ↔ Goal-Directed Autonomy ↔ Fully Autonomous. Contemporary best practice in AI deployment targets supervised or goal-directed autonomy, with human-in-the-loop checkpoints at high-risk decision nodes.
-  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> [!NOTE]
+> **Autonomy Spectrum (Wooldridge & Jennings, 1995 / Extended):** Corrigible (no autonomy) ↔ Supervised Autonomy ↔ Goal-Directed Autonomy ↔ Fully Autonomous.
+> Contemporary best practice in AI deployment targets supervised or goal-directed autonomy, with human-in-the-loop checkpoints at high-risk decision nodes.
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 The degree of autonomy exhibited by an agent is closely linked to its level of social integration. An agent that operates within a multi-agent system must balance its own goal-directed autonomy with cooperative norms established with other agents. This tension---between individual rationality and collective coordination---is one of the central problems in multi-agent systems research and is directly relevant to the design of modern AI pipelines that orchestrate multiple specialised sub-agents.
 
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **📌 Annotation: Autonomy in Contemporary AI Governance:** The autonomy spectrum discussed by Wooldridge & Jennings anticipates contemporary debates in AI safety and governance. Anthropic's Constitutional AI, OpenAI's alignment frameworks, and the EU AI Act all implicitly invoke the autonomy spectrum: high-risk AI systems (those with significant real-world consequences) are required to maintain human oversight, limiting their autonomy. Understanding autonomy as a property along a spectrum---rather than a binary attribute---is essential for responsible agent deployment.
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-**Section 3: Glossary Pre-Fill Sheet**
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> [!NOTE]
+>  **📌 Annotation: Autonomy in Contemporary AI Governance:** The autonomy spectrum discussed by Wooldridge & Jennings anticipates contemporary debates in AI safety and governance.
+> Anthropic's Constitutional AI, OpenAI's alignment frameworks, and the EU AI Act all implicitly invoke the autonomy spectrum: high-risk AI systems (those with significant real-world
+> consequences) are required to maintain human oversight, limiting their autonomy. Understanding autonomy as a property along a spectrum---rather than a binary attribute---is essential
+> for responsible agent deployment.
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+## Section 3: Glossary Pre-Fill Sheet
 
 Instructions: For each term below, complete the definition by filling in the blanks (shown as \_\_\_\_\_\_\_\_\_\_). Use the cited readings for guidance. Completed glossaries will be discussed in the next class session. Pay close attention to the distinctions between terms that appear similar (e.g., Desire vs. Intention; Autonomy vs. Pro-activeness).
 
