@@ -127,7 +127,7 @@ LangGraph supports conditional branching, parallel execution of agent sub-tasks,
 The concept of an agent has become important in both artificial intelligence (AI) and mainstream computer science. Our aim in this paper is to point the reader at what we perceive to be the most important theoretical and practical issues associated with the design and construction of intelligent agents. Agent theory is concerned with the question of what an agent is, and the use of mathematical formalisms for representing and reasoning about the properties of agents. Agent architectures can be thought of as software engineering models of agents; researchers in this area are primarily concerned with the problem of designing software or hardware systems that will satisfy the properties specified by agent theorists. Finally, agent languages are software systems for programming and experimenting with agents; these may embody principles proposed by theorists.
 
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-> [!NOTE]
+> [!IMPORTANT]
 > **📌 Annotation: The Three-Layer Framework:** Wooldridge & Jennings organise agent research into three mutually reinforcing layers: (1) theory (formal properties and logic),
 > (2) architectures (engineering implementations), and (3) languages (programming abstractions). This taxonomy remains foundational today. Modern frameworks such as LangChain
 > and LangGraph correspond primarily to the architecture and language layers, while the theoretical layer is addressed by research in BDI logic, game-theoretic decision theory,
@@ -149,7 +149,7 @@ Perhaps the most general way in which the term "agent" is used is to denote a ha
   -------------------- -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  
  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-> [!NOTE]
+> [!IMPORTANT]
 >   **📌 Annotation: Mapping to LLM Agents:** These four properties map directly onto the design goals of modern LLM-based agents: Autonomy → the agent acts without step-by-step human instruction
 > (ReAct loop without human intervention); Social Ability → multi-agent systems communicate via shared message formats (e.g., LangChain messages, OpenAI function-call JSON);
 > Reactivity → the agent's tool-call results inform its next action (the Observation step); Pro-activeness → the agent pursues a terminal goal across multiple steps, not
@@ -171,7 +171,7 @@ In addition to the four weak-agency properties, the following attributes are dis
 > **Rationality:** (Crudely) the assumption that an agent will act in order to achieve its goals, and will not act in such a way as to prevent its goals being achieved---at least insofar as its beliefs permit (Galliers, 1988b, pp. 49--54).
 
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-> [!NOTE]
+> [!IMPORTANT]
 >   **📌 Annotation: Rationality in Formal Agent Theory:** The notion of rationality introduced here is a conceptual precursor to the formal BDI (Belief--Desire--Intention) model.
 > In BDI theory (Rao & Georgeff, 1991), a rational agent selects intentions that are consistent with its beliefs about the world and its desires about future states. Rationality does
 > not imply omniscience or perfect reasoning; it only requires that the agent not act against its own goals given what it currently believes. This is a key design constraint for
@@ -190,7 +190,7 @@ An obvious question is whether it is legitimate or useful to attribute beliefs, 
 
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-> [!NOTE]
+> [!IMPORTANT]
 >  **📌 Annotation: The Intentional Stance and LLMs:** Dennett's intentional stance is particularly relevant to LLM-based agents, whose internal computations are largely opaque.
 > We routinely say that an LLM "believes" something, "wants" to produce a coherent answer, or "intends" to call a tool---even though the model is, mechanistically, a statistical
 > next-token predictor. Wooldridge & Jennings' justification for the intentional stance provides a rigorous philosophical grounding for this common engineering practice.
@@ -210,7 +210,7 @@ For the purposes of this survey, the two most important categories of intentiona
   ------------------------------------------------------------------ -------------------------------------------------------------------------------------------------------------------------------------
 
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-> [!NOTE]
+> [!IMPORTANT]
 >  **📌 Annotation: BDI Architecture:** The information / pro-attitude taxonomy is the theoretical foundation for the BDI (Belief--Desire--Intention) architecture, first formally
 > specified by Rao & Georgeff (1991). BDI remains influential in both academic agent theory and practical systems (PRS, dMARS, JADE, Jason). In LLM agents, beliefs correspond to
 > the model's parametric and retrieved knowledge; desires map onto the user-specified task or system prompt objective; intentions map onto the specific plan or tool-call
@@ -238,7 +238,7 @@ Cohen and Levesque (1990) identified seven properties that must be satisfied by 
 7.  Agents need not intend all the expected side effects of their intentions.
 
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  > [!NOTE]
+  > [!IMPORTANT]
 > **📌 Annotation: Intentions and LLM Agent Design:** These seven properties have direct implications for LLM-agent engineering. Property 3 (retry on failure) motivates self-reflection
 > and re-planning loops in agents. Property 2 (non-conflicting intentions) motivates constraint-checking in multi-agent task allocation. Property 7 (no obligation for side effects) informs
 > how agents should handle uncertainty: an agent that books a flight need not intend the environmental impact of the flight as a goal. These properties are also relevant to AI safety:
@@ -260,7 +260,7 @@ For practical AI systems, neither extreme is desirable. A fully corrigible agent
 The degree of autonomy exhibited by an agent is closely linked to its level of social integration. An agent that operates within a multi-agent system must balance its own goal-directed autonomy with cooperative norms established with other agents. This tension---between individual rationality and collective coordination---is one of the central problems in multi-agent systems research and is directly relevant to the design of modern AI pipelines that orchestrate multiple specialised sub-agents.
 
   --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-> [!NOTE]
+> [!IMPORTANT]
 >  **📌 Annotation: Autonomy in Contemporary AI Governance:** The autonomy spectrum discussed by Wooldridge & Jennings anticipates contemporary debates in AI safety and governance.
 > Anthropic's Constitutional AI, OpenAI's alignment frameworks, and the EU AI Act all implicitly invoke the autonomy spectrum: high-risk AI systems (those with significant real-world
 > consequences) are required to maintain human oversight, limiting their autonomy. Understanding autonomy as a property along a spectrum---rather than a binary attribute---is essential
