@@ -271,83 +271,55 @@ The degree of autonomy exhibited by an agent is closely linked to its level of s
 
 Instructions: For each term below, complete the definition by filling in the blanks (shown as \_\_\_\_\_\_\_\_\_\_). Use the cited readings for guidance. Completed glossaries will be discussed in the next class session. Pay close attention to the distinctions between terms that appear similar (e.g., Desire vs. Intention; Autonomy vs. Pro-activeness).
 
-+-----------------------------------------------------------------------------------------------------------------+
-| **AI Automation and Agents --- Glossary Pre-Fill Sheet**                                                        |
-|                                                                                                                 |
-| Student Name: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ Date: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |
-+-----------------------------------------------------------------------------------------------------------------+
+----------------------------------------------------------------------------------------------------------------
 
-  ------------------------------------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **1. Agent** *\[Hint: W&J §1.1, LangChain §1\]*   
-  **Context**                                       Wooldridge & Jennings (1995) define an agent as a computer system capable of autonomous action in an environment to meet its design objectives.
-  **Complete the definition:**                      *A hardware or software system situated in an environment that \_\_\_\_\_\_\_\_\_\_ perceives that environment and \_\_\_\_\_\_\_\_\_\_ acts upon it in order to meet its delegated \_\_\_\_\_\_\_\_\_\_.*
-  ------------------------------------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ **AI Automation and Agents --- Glossary Pre-Fill Sheet**   <br> <br>                                                     
+                                                                                                                 
+Student Name: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ Date: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_  <br>
 
-  ---------------------------------------- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **2. Autonomy** *\[Hint: W&J §1.1.1\]*   
-  **Context**                              One of the four core properties of a weak agent; refers to the agent's ability to act without direct human intervention.
-  **Complete the definition:**             *The property by which an agent operates without the \_\_\_\_\_\_\_\_\_\_ intervention of humans or others, maintaining \_\_\_\_\_\_\_\_\_\_ over its own actions and internal \_\_\_\_\_\_\_\_\_\_.*
-  ---------------------------------------- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
 
-  ------------------------------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------
-  **3. Reactivity** *\[Hint: W&J §1.1.1\]*   
-  **Context**                                Distinguishes agents from passive software modules; an agent must respond to environmental changes, not merely process inputs.
-  **Complete the definition:**               *The property by which an agent \_\_\_\_\_\_\_\_\_\_ its environment and responds in a \_\_\_\_\_\_\_\_\_\_ fashion to changes that occur in it.*
-  ------------------------------------------ ---------------------------------------------------------------------------------------------------------------------------------------------------
+  ------------------------------------------------- --------------------------------------------------------------------------------------------------------------------------------------------------
+  |      |     |
+  | :-- | :-- |
+  | **1. Agent** | *\[Hint: W&J §1.1, LangChain §1\]* |
+  | **Context**          |                             Wooldridge & Jennings (1995) define an agent as a computer system capable of autonomous action in an environment to meet its design objectives. |
+ | **Complete the definition:** |                     *A hardware or software system situated in an environment that \_\_\_\_\_\_\_\_\_\_ perceives that environment and \_\_\_\_\_\_\_\_\_\_ acts upon it in order to meet its delegated \_\_\_\_\_\_\_\_\_\_.* |
+ |   **2. Autonomy** |  *\[Hint: W&J §1.1.1\]*    |
+| **Context**                          |    One of the four core properties of a weak agent; refers to the agent's ability to act without direct human intervention. |
+| **Complete the definition:**      |        *The property by which an agent operates without the \_\_\_\_\_\_\_\_\_\_ intervention of humans or others, maintaining \_\_\_\_\_\_\_\_\_\_ over its own actions and internal \_\_\_\_\_\_\_\_\_\_.* |
+|   **3. Reactivity** | *\[Hint: W&J §1.1.1\]*   |
+| **Context**    |                            Distinguishes agents from passive software modules; an agent must respond to environmental changes, not merely process inputs. |
+|  **Complete the definition:**          |     *The property by which an agent \_\_\_\_\_\_\_\_\_\_ its environment and responds in a \_\_\_\_\_\_\_\_\_\_ fashion to changes that occur in it.* |
+|  **4. Pro-activeness** | *\[Hint: W&J §1.1.1\]*   |
+|  **Context**                 |             Alongside reactivity, pro-activeness distinguishes agents from simple stimulus-response systems. |
+| **Complete the definition:**     |              *The property by which an agent exhibits \_\_\_\_\_\_\_\_\_\_ behaviour by taking the \_\_\_\_\_\_\_\_\_\_, rather than merely responding to its \_\_\_\_\_\_\_\_\_\_.* |
+|  **5. Intentional Stance** | *\[Hint: W&J §2.1; Dennett (1987)\]*   |
+| **Context**              |                                        Dennett's philosophical concept adopted by Wooldridge & Jennings to justify ascribing mental predicates to artificial agents. |
+|  **Complete the definition:**      |                               *A strategy for predicting and explaining the behaviour of a system by treating it as if it had \_\_\_\_\_\_\_\_\_\_, \_\_\_\_\_\_\_\_\_\_, and \_\_\_\_\_\_\_\_\_\_, regardless of the system's physical substrate.* |
+| **6. Belief (BDI)** | *\[Hint: W&J §2.1--2.2; Rao & Georgeff (1991)\]*   |
+|  **Context**       |                                                     An information attitude in the BDI framework, representing the agent's internal model of the world. |
+| **Complete the definition:**     |                                      *An agent's \_\_\_\_\_\_\_\_\_\_ of the state of its environment; may be \_\_\_\_\_\_\_\_\_\_ or \_\_\_\_\_\_\_\_\_\_, and may change over time as the agent perceives new information.* |
+|  **7. Desire (BDI)** | *\[Hint: W&J §2.1--2.2\]*   |
+|  **Context**                 |                    A pro-attitude representing a motivational state; what the agent "wants" to be true. |
+|  **Complete the definition:**     |               *A \_\_\_\_\_\_\_\_\_\_ state of affairs the agent wishes to \_\_\_\_\_\_\_\_\_\_; constitutes the agent's motivational component, but does not necessarily lead to \_\_\_\_\_\_\_\_\_\_ unless adopted as an intention.* |
+|  **8. Intention (BDI)** | *\[Hint: W&J §2.6.2; Cohen & Levesque (1990)\]*   |
+ | **Context**           |                                                   The pro-attitude that distinguishes committed goal pursuit from mere desire; the basis of planned action. |
+ | **Complete the definition:**        |                                     *A desire to which the agent has \_\_\_\_\_\_\_\_\_\_, leading it to formulate and execute \_\_\_\_\_\_\_\_\_\_; intentions \_\_\_\_\_\_\_\_\_\_ resources and constrain the adoption of conflicting intentions.* |
+  | **9. Rationality (Agent Theory)** | *\[Hint: W&J §1.1.3\]*   |
+  | **Context**        |                                        A property of the stronger notion of agency; an agent is rational if its actions are consistent with its goals given its beliefs. |
+  | **Complete the definition:**     |                          *The property by which an agent acts in order to achieve its \_\_\_\_\_\_\_\_\_\_, and will not act in such a way as to \_\_\_\_\_\_\_\_\_\_ its goals being achieved---at least insofar as its \_\_\_\_\_\_\_\_\_\_ permit.* |
+| **10. ReAct Loop** | *\[Hint: LangChain §1.3; Yao et al. (2022)\]*   |
+|  **Context**           |                                             The predominant execution paradigm in LangChain-style agents, introduced by Yao et al. (2022). |
+|  **Complete the definition:**      |                                 *An agent execution pattern that interleaves \_\_\_\_\_\_\_\_\_\_ (reasoning traces) with \_\_\_\_\_\_\_\_\_\_ (tool invocations) and \_\_\_\_\_\_\_\_\_\_ (environmental feedback), iterating until a terminal condition is met.* |
+ | **11. Tool (LangChain)** | *\[Hint: LangChain §1.2\]*  | 
+ | **Context**     |                                      A callable function exposed to an LLM agent that extends its capabilities beyond parametric knowledge. |
+ | **Complete the definition:**         |                 *A callable component with a \_\_\_\_\_\_\_\_\_\_, a natural-language \_\_\_\_\_\_\_\_\_\_, and a typed \_\_\_\_\_\_\_\_\_\_, which extends an LLM agent's reach into external systems such as APIs, databases, or code interpreters.* |
+ | **12. Multi-agent System** | *\[Hint: W&J §1; Jennings (1993); LangGraph documentation\]*   |
+ | **Context**          |                                                                     A collection of interacting agents designed to solve problems that exceed the capabilities of any single agent. |
+ | **Complete the definition:**         |                                                     *A system comprising two or more agents that interact through \_\_\_\_\_\_\_\_\_\_ to pursue individual or \_\_\_\_\_\_\_\_\_\_ goals within a shared \_\_\_\_\_\_\_\_\_\_, giving rise to emergent collective behaviour.* |
 
-  ---------------------------------------------- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **4. Pro-activeness** *\[Hint: W&J §1.1.1\]*   
-  **Context**                                    Alongside reactivity, pro-activeness distinguishes agents from simple stimulus-response systems.
-  **Complete the definition:**                   *The property by which an agent exhibits \_\_\_\_\_\_\_\_\_\_ behaviour by taking the \_\_\_\_\_\_\_\_\_\_, rather than merely responding to its \_\_\_\_\_\_\_\_\_\_.*
-  ---------------------------------------------- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-  ---------------------------------------------------------------- -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **5. Intentional Stance** *\[Hint: W&J §2.1; Dennett (1987)\]*   
-  **Context**                                                      Dennett's philosophical concept adopted by Wooldridge & Jennings to justify ascribing mental predicates to artificial agents.
-  **Complete the definition:**                                     *A strategy for predicting and explaining the behaviour of a system by treating it as if it had \_\_\_\_\_\_\_\_\_\_, \_\_\_\_\_\_\_\_\_\_, and \_\_\_\_\_\_\_\_\_\_, regardless of the system's physical substrate.*
-  ---------------------------------------------------------------- -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-  ---------------------------------------------------------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **6. Belief (BDI)** *\[Hint: W&J §2.1--2.2; Rao & Georgeff (1991)\]*   
-  **Context**                                                            An information attitude in the BDI framework, representing the agent's internal model of the world.
-  **Complete the definition:**                                           *An agent's \_\_\_\_\_\_\_\_\_\_ of the state of its environment; may be \_\_\_\_\_\_\_\_\_\_ or \_\_\_\_\_\_\_\_\_\_, and may change over time as the agent perceives new information.*
-  ---------------------------------------------------------------------- ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-  ----------------------------------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **7. Desire (BDI)** *\[Hint: W&J §2.1--2.2\]*   
-  **Context**                                     A pro-attitude representing a motivational state; what the agent "wants" to be true.
-  **Complete the definition:**                    *A \_\_\_\_\_\_\_\_\_\_ state of affairs the agent wishes to \_\_\_\_\_\_\_\_\_\_; constitutes the agent's motivational component, but does not necessarily lead to \_\_\_\_\_\_\_\_\_\_ unless adopted as an intention.*
-  ----------------------------------------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-  ------------------------------------------------------------------------ -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **8. Intention (BDI)** *\[Hint: W&J §2.6.2; Cohen & Levesque (1990)\]*   
-  **Context**                                                              The pro-attitude that distinguishes committed goal pursuit from mere desire; the basis of planned action.
-  **Complete the definition:**                                             *A desire to which the agent has \_\_\_\_\_\_\_\_\_\_, leading it to formulate and execute \_\_\_\_\_\_\_\_\_\_; intentions \_\_\_\_\_\_\_\_\_\_ resources and constrain the adoption of conflicting intentions.*
-  ------------------------------------------------------------------------ -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-  ---------------------------------------------------------- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **9. Rationality (Agent Theory)** *\[Hint: W&J §1.1.3\]*   
-  **Context**                                                A property of the stronger notion of agency; an agent is rational if its actions are consistent with its goals given its beliefs.
-  **Complete the definition:**                               *The property by which an agent acts in order to achieve its \_\_\_\_\_\_\_\_\_\_, and will not act in such a way as to \_\_\_\_\_\_\_\_\_\_ its goals being achieved---at least insofar as its \_\_\_\_\_\_\_\_\_\_ permit.*
-  ---------------------------------------------------------- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-  ------------------------------------------------------------------ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **10. ReAct Loop** *\[Hint: LangChain §1.3; Yao et al. (2022)\]*   
-  **Context**                                                        The predominant execution paradigm in LangChain-style agents, introduced by Yao et al. (2022).
-  **Complete the definition:**                                       *An agent execution pattern that interleaves \_\_\_\_\_\_\_\_\_\_ (reasoning traces) with \_\_\_\_\_\_\_\_\_\_ (tool invocations) and \_\_\_\_\_\_\_\_\_\_ (environmental feedback), iterating until a terminal condition is met.*
-  ------------------------------------------------------------------ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-  ----------------------------------------------------- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **11. Tool (LangChain)** *\[Hint: LangChain §1.2\]*   
-  **Context**                                           A callable function exposed to an LLM agent that extends its capabilities beyond parametric knowledge.
-  **Complete the definition:**                          *A callable component with a \_\_\_\_\_\_\_\_\_\_, a natural-language \_\_\_\_\_\_\_\_\_\_, and a typed \_\_\_\_\_\_\_\_\_\_, which extends an LLM agent's reach into external systems such as APIs, databases, or code interpreters.*
-  ----------------------------------------------------- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-  ----------------------------------------------------------------------------------------- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  **12. Multi-agent System** *\[Hint: W&J §1; Jennings (1993); LangGraph documentation\]*   
-  **Context**                                                                               A collection of interacting agents designed to solve problems that exceed the capabilities of any single agent.
-  **Complete the definition:**                                                              *A system comprising two or more agents that interact through \_\_\_\_\_\_\_\_\_\_ to pursue individual or \_\_\_\_\_\_\_\_\_\_ goals within a shared \_\_\_\_\_\_\_\_\_\_, giving rise to emergent collective behaviour.*
-  ----------------------------------------------------------------------------------------- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ __________________________________________________________________________________________________________________________
 
 **Synthesis Questions (Short Answer)**
 
@@ -355,12 +327,18 @@ After completing the glossary terms, answer the following synthesis questions in
 
 **Q1:** How does the weak notion of agency (Wooldridge & Jennings) align with or differ from LangChain's engineering definition of an agent? Identify at least two points of convergence and one point of divergence.
 
-**Response:**
+**Response:** <br> <br> <br>
 
 **Q2:** Why does Wooldridge & Jennings' notion of rationality not require an agent to be omniscient? What are the implications of this for the design of LLM-based agents operating in open-ended environments?
 
-**Response:**
+**Response:** <br> <br> <br>
 
 **Q3:** A colleague proposes building an AI system that is "fully autonomous"---one that never requires human input or oversight. Using the vocabulary from this reading package, construct a critique of this proposal.
 
-**Response:**
+**Response:** <br> <br> <br>
+
+***
+
+ Created: 04/29/2026 (C. Lizárraga) <br>
+ Updated: 04/29/2026 (C. Lizárraga)
+ 
