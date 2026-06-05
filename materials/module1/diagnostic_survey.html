@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Diagnostic Knowledge Survey — AI Automation & Agents</title>
+<style>
+  :root {
+    --bg: #f8f9fb;
+    --card: #ffffff;
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --accent: #eff6ff;
+    --border: #e2e8f0;
+    --text: #1e293b;
+    --muted: #64748b;
+    --success: #16a34a;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+  .wrapper { max-width: 780px; margin: 0 auto; }
+
+  header {
+    background: var(--primary);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 2rem 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+  header h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: .4rem; }
+  header p { font-size: .92rem; opacity: .88; line-height: 1.55; }
+  .meta {
+    display: flex; gap: 1.5rem; margin-top: 1rem; flex-wrap: wrap;
+  }
+  .meta span {
+    background: rgba(255,255,255,.18);
+    border-radius: 5px;
+    padding: .25rem .75rem;
+    font-size: .83rem;
+    font-weight: 600;
+    letter-spacing: .02em;
+  }
+
+  .notice {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-radius: var(--radius);
+    padding: 1rem 1.4rem;
+    font-size: .88rem;
+    color: #92400e;
+    margin-bottom: 1.8rem;
+    line-height: 1.55;
+  }
+  .notice strong { display: block; margin-bottom: .2rem; }
+
+  .progress-bar-wrap {
+    background: var(--border);
+    border-radius: 99px;
+    height: 6px;
+    margin-bottom: 1.8rem;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 99px;
+    transition: width .4s ease;
+    width: 0%;
+  }
+  .progress-label {
+    text-align: right;
+    font-size: .78rem;
+    color: var(--muted);
+    margin-top: .3rem;
+  }
+
+  .section-header {
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin: 2rem 0 .75rem;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.8rem;
+    margin-bottom: 1.1rem;
+    transition: border-color .2s;
+  }
+  .card:focus-within { border-color: var(--primary); }
+
+  .q-label {
+    font-size: .78rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: .4rem;
+  }
+  .q-text {
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  /* Radio / Checkbox options */
+  .options { display: flex; flex-direction: column; gap: .5rem; }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: .65rem;
+    cursor: pointer;
+    padding: .55rem .8rem;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    transition: background .15s, border-color .15s;
+  }
+  .option:hover { background: var(--accent); border-color: var(--primary); }
+  .option input[type="radio"],
+  .option input[type="checkbox"] {
+    margin-top: 2px;
+    accent-color: var(--primary);
+    flex-shrink: 0;
+    width: 16px; height: 16px;
+  }
+  .option.selected { background: var(--accent); border-color: var(--primary); }
+  .option span { font-size: .93rem; line-height: 1.45; }
+
+  /* Scale */
+  .scale-wrap { display: flex; gap: .45rem; flex-wrap: wrap; }
+  .scale-btn {
+    flex: 1; min-width: 42px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--card);
+    cursor: pointer;
+    padding: .55rem .2rem;
+    text-align: center;
+    font-size: .88rem;
+    font-weight: 600;
+    color: var(--muted);
+    transition: background .15s, border-color .15s, color .15s;
+  }
+  .scale-btn:hover { background: var(--accent); border-color: var(--primary); color: var(--primary); }
+  .scale-btn.selected { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .scale-labels { display: flex; justify-content: space-between; margin-top: .45rem; font-size: .72rem; color: var(--muted); }
+
+  /* Textarea */
+  textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: .75rem 1rem;
+    font-size: .93rem;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 110px;
+    color: var(--text);
+    transition: border-color .2s;
+    background: var(--bg);
+  }
+  textarea:focus { outline: none; border-color: var(--primary); background: #fff; }
+
+  /* Submit */
+  .submit-wrap { margin-top: 2rem; text-align: center; }
+  button.submit {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: .85rem 2.8rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: .02em;
+    transition: background .2s;
+  }
+  button.submit:hover { background: var(--primary-dark); }
+  button.submit:disabled { opacity: .5; cursor: not-allowed; }
+
+  /* Thank you screen */
+  #thankyou {
+    display: none;
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  #thankyou .icon { font-size: 3.5rem; margin-bottom: 1rem; }
+  #thankyou h2 { font-size: 1.6rem; color: var(--success); margin-bottom: .75rem; }
+  #thankyou p { color: var(--muted); font-size: .95rem; line-height: 1.6; max-width: 480px; margin: 0 auto; }
+  #thankyou .summary-box {
+    margin-top: 1.8rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.5rem;
+    text-align: left;
+    font-size: .85rem;
+    color: var(--text);
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #thankyou .summary-box h3 { font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--primary); margin-bottom: .8rem; font-weight: 700; }
+  #thankyou .summary-box p { margin: 0; }
+  .summary-row { display: flex; justify-content: space-between; padding: .35rem 0; border-bottom: 1px solid var(--border); }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-row .sr-label { color: var(--muted); }
+  .summary-row .sr-val { font-weight: 600; text-align: right; max-width: 60%; }
+
+  #form-area.hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <header>
+    <h1>Diagnostic Knowledge Survey</h1>
+    <p>AI Automation &amp; Agents — Pre-Instruction Baseline</p>
+    <div class="meta">
+      <span>12 Questions</span>
+      <span>~10 Minutes</span>
+      <span>Ungraded</span>
+    </div>
+  </header>
+
+  <div class="notice">
+    <strong>⚠ Do not look up answers before completing this survey.</strong>
+    This survey captures your <em>current</em> mental models before instruction begins.
+    Your responses form the baseline the course uses to measure learning growth.
+    All answers are confidential and will not affect your grade.
+  </div>
+
+  <div id="form-area">
+    <div class="progress-bar-wrap"><div class="progress-bar" id="pbar"></div></div>
+    <div class="progress-label" id="plabel">0 of 12 answered</div>
+
+    <form id="survey" novalidate>
+
+      <!-- SECTION 1 -->
+      <div class="section-header">Section 1 — Prior Experience with Automation Tools</div>
+
+      <!-- Q1 -->
+      <div class="card" id="card-q1">
+        <div class="q-label">Question 1 of 12</div>
+        <div class="q-text">Which of the following automation tools or platforms have you used before? (Select all that apply.)</div>
+        <div class="options" id="opts-q1">
+          <label class="option"><input type="checkbox" name="q1" value="zapier" /> <span>Zapier / Make (Integromat)</span></label>
+          <label class="option"><input type="checkbox" name="q1" value="uipath" /> <span>UiPath, Automation Anywhere, or another RPA platform</span></label>
+          <label class="option"><input type="checkbox" name="q1" value="excel_macros" /> <span>Excel macros or Google Apps Script</span></label>
+          <label class="option"><input type="checkbox" name="q1" value="shell" /> <span>Shell scripts (Bash, PowerShell)</span></label>
+          <label class="option"><input type="checkbox" name="q1" value="python_scripts" /> <span>Python scripts for task automation</span></label>
+          <label class="option"><input type="checkbox" name="q1" value="none" /> <span>None of the above</span></label>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="card" id="card-q2">
+        <div class="q-label">Question 2 of 12</div>
+        <div class="q-text">How many years of experience do you have using any form of workflow automation in a professional or academic setting?</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="q2" value="none" /> <span>None — this is new to me</span></label>
+          <label class="option"><input type="radio" name="q2" value="lt1" /> <span>Less than 1 year</span></label>
+          <label class="option"><input type="radio" name="q2" value="1-2" /> <span>1–2 years</span></label>
+          <label class="option"><input type="radio" name="q2" value="3-5" /> <span>3–5 years</span></label>
+          <label class="option"><input type="radio" name="q2" value="gt5" /> <span>More than 5 years</span></label>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="card" id="card-q3">
+        <div class="q-label">Question 3 of 12</div>
+        <div class="q-text">Which best describes the most complex automation workflow you have built or maintained?</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="q3" value="none" /> <span>I have not built one</span></label>
+          <label class="option"><input type="radio" name="q3" value="single" /> <span>A single-step trigger → action (e.g., "email arrives → save attachment")</span></label>
+          <label class="option"><input type="radio" name="q3" value="multi" /> <span>A multi-step pipeline with conditional branching</span></label>
+          <label class="option"><input type="radio" name="q3" value="integrated" /> <span>A pipeline integrating multiple external APIs or services</span></label>
+          <label class="option"><input type="radio" name="q3" value="agent" /> <span>An autonomous agent or system that makes decisions without predefined rules</span></label>
+        </div>
+      </div>
+
+      <!-- SECTION 2 -->
+      <div class="section-header">Section 2 — Current Working Definition of 'AI Agent'</div>
+
+      <!-- Q4 -->
+      <div class="card" id="card-q4">
+        <div class="q-label">Question 4 of 12</div>
+        <div class="q-text">In your own words, what is an "AI agent"? Write 1–3 sentences. (There is no correct answer — describe what you currently believe.)</div>
+        <textarea name="q4" id="q4" placeholder="Type your definition here…" rows="4"></textarea>
+      </div>
+
+      <!-- Q5 -->
+      <div class="card" id="card-q5">
+        <div class="q-label">Question 5 of 12</div>
+        <div class="q-text">Which of the following properties do you believe are essential to classify a system as an "AI agent"? (Select all that apply.)</div>
+        <div class="options" id="opts-q5">
+          <label class="option"><input type="checkbox" name="q5" value="perception" /> <span>Perception — the ability to observe an environment</span></label>
+          <label class="option"><input type="checkbox" name="q5" value="goal" /> <span>Goal-directedness — the system pursues an objective</span></label>
+          <label class="option"><input type="checkbox" name="q5" value="memory" /> <span>Memory — the ability to retain state across interactions</span></label>
+          <label class="option"><input type="checkbox" name="q5" value="tools" /> <span>Tool use — the ability to call external functions or APIs</span></label>
+          <label class="option"><input type="checkbox" name="q5" value="llm" /> <span>Use of a large language model (LLM) as a core component</span></label>
+          <label class="option"><input type="checkbox" name="q5" value="autonomy" /> <span>Autonomy — the ability to act without step-by-step human instructions</span></label>
+          <label class="option"><input type="checkbox" name="q5" value="unsure" /> <span>I am not sure</span></label>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="card" id="card-q6">
+        <div class="q-label">Question 6 of 12</div>
+        <div class="q-text">How would you distinguish an "AI agent" from a standard chatbot or conversational AI?</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="q6" value="no_diff" /> <span>They are essentially the same thing</span></label>
+          <label class="option"><input type="radio" name="q6" value="agents_act" /> <span>Agents can take actions in the world; chatbots only generate text responses</span></label>
+          <label class="option"><input type="radio" name="q6" value="agents_smarter" /> <span>Agents are smarter / use a more powerful model</span></label>
+          <label class="option"><input type="radio" name="q6" value="agents_loop" /> <span>Agents operate in a perception–reasoning–action loop; chatbots respond reactively to a single prompt</span></label>
+          <label class="option"><input type="radio" name="q6" value="unsure" /> <span>I do not know</span></label>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="card" id="card-q7">
+        <div class="q-label">Question 7 of 12</div>
+        <div class="q-text">Which of the following is the best example of a multi-agent system?</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="q7" value="chatgpt" /> <span>A user and ChatGPT having a back-and-forth conversation</span></label>
+          <label class="option"><input type="radio" name="q7" value="pipeline" /> <span>A data pipeline that runs ETL jobs nightly</span></label>
+          <label class="option"><input type="radio" name="q7" value="multiagent" /> <span>A planner agent that breaks a task into subtasks and delegates them to specialist agents</span></label>
+          <label class="option"><input type="radio" name="q7" value="rag" /> <span>A retrieval-augmented generation (RAG) system that answers questions over documents</span></label>
+          <label class="option"><input type="radio" name="q7" value="unsure" /> <span>I do not know</span></label>
+        </div>
+      </div>
+
+      <!-- SECTION 3 -->
+      <div class="section-header">Section 3 — Comfort Level with Python</div>
+
+      <!-- Q8 -->
+      <div class="card" id="card-q8">
+        <div class="q-label">Question 8 of 12</div>
+        <div class="q-text">Rate your overall Python programming proficiency.</div>
+        <div class="scale-wrap" id="scale-q8">
+          <button type="button" class="scale-btn" data-val="1">1</button>
+          <button type="button" class="scale-btn" data-val="2">2</button>
+          <button type="button" class="scale-btn" data-val="3">3</button>
+          <button type="button" class="scale-btn" data-val="4">4</button>
+          <button type="button" class="scale-btn" data-val="5">5</button>
+        </div>
+        <div class="scale-labels"><span>No experience</span><span>Expert</span></div>
+        <input type="hidden" name="q8" id="q8-val" />
+      </div>
+
+      <!-- Q9 -->
+      <div class="card" id="card-q9">
+        <div class="q-label">Question 9 of 12</div>
+        <div class="q-text">Which Python concepts are you comfortable using independently? (Select all that apply.)</div>
+        <div class="options" id="opts-q9">
+          <label class="option"><input type="checkbox" name="q9" value="basics" /> <span>Variables, loops, conditionals, and functions</span></label>
+          <label class="option"><input type="checkbox" name="q9" value="oop" /> <span>Object-oriented programming (classes, inheritance)</span></label>
+          <label class="option"><input type="checkbox" name="q9" value="apis" /> <span>Calling external APIs using <code>requests</code> or <code>httpx</code></span></label>
+          <label class="option"><input type="checkbox" name="q9" value="async" /> <span>Asynchronous programming (<code>asyncio</code>, <code>await</code>)</span></label>
+          <label class="option"><input type="checkbox" name="q9" value="data" /> <span>Data manipulation with <code>pandas</code> or <code>numpy</code></span></label>
+          <label class="option"><input type="checkbox" name="q9" value="llm_libs" /> <span>LLM libraries (LangChain, LlamaIndex, OpenAI SDK, etc.)</span></label>
+          <label class="option"><input type="checkbox" name="q9" value="none" /> <span>None of the above</span></label>
+        </div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="card" id="card-q10">
+        <div class="q-label">Question 10 of 12</div>
+        <div class="q-text">How comfortable are you reading and debugging unfamiliar Python code written by others?</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="q10" value="1" /> <span>Not comfortable — I struggle to follow code I did not write</span></label>
+          <label class="option"><input type="radio" name="q10" value="2" /> <span>Somewhat comfortable with straightforward scripts</span></label>
+          <label class="option"><input type="radio" name="q10" value="3" /> <span>Comfortable with moderately complex code</span></label>
+          <label class="option"><input type="radio" name="q10" value="4" /> <span>Very comfortable — I regularly review others' code</span></label>
+        </div>
+      </div>
+
+      <!-- Q11 -->
+      <div class="card" id="card-q11">
+        <div class="q-label">Question 11 of 12</div>
+        <div class="q-text">Rate your confidence in using Python specifically for building AI or LLM-powered applications.</div>
+        <div class="scale-wrap" id="scale-q11">
+          <button type="button" class="scale-btn" data-val="1">1</button>
+          <button type="button" class="scale-btn" data-val="2">2</button>
+          <button type="button" class="scale-btn" data-val="3">3</button>
+          <button type="button" class="scale-btn" data-val="4">4</button>
+          <button type="button" class="scale-btn" data-val="5">5</button>
+        </div>
+        <div class="scale-labels"><span>No confidence</span><span>Fully confident</span></div>
+        <input type="hidden" name="q11" id="q11-val" />
+      </div>
+
+      <!-- SECTION 4 -->
+      <div class="section-header">Section 4 — Open-Ended Reflection</div>
+
+      <!-- Q12 -->
+      <div class="card" id="card-q12">
+        <div class="q-label">Question 12 of 12</div>
+        <div class="q-text">Name one repetitive task at work or school that you wish you could hand off. Describe it briefly: What triggers it? What steps does it involve? What would "done" look like?</div>
+        <textarea name="q12" id="q12" placeholder="Describe the task here…" rows="6"></textarea>
+      </div>
+
+      <div class="submit-wrap">
+        <button type="submit" class="submit" id="submit-btn">Submit Survey</button>
+        <div style="margin-top:.6rem; font-size:.78rem; color:var(--muted)">All responses are saved locally in your browser.</div>
+      </div>
+
+    </form>
+  </div><!-- /form-area -->
+
+  <div id="thankyou">
+    <div class="icon">✅</div>
+    <h2>Baseline Captured</h2>
+    <p>Your pre-instruction mental models have been recorded. Revisit this survey at the end of the course to see how your thinking has evolved.</p>
+    <div class="summary-box" id="summary-box">
+      <h3>Your Response Summary</h3>
+    </div>
+  </div>
+
+</div><!-- /wrapper -->
+
+<script>
+// ── Progress tracking ──────────────────────────────────────────────────
+const TOTAL = 12;
+
+function countAnswered() {
+  let n = 0;
+  // Q1, Q5, Q9 — checkboxes (at least one checked)
+  ['q1','q5','q9'].forEach(name => {
+    if (document.querySelector(`input[name="${name}"]:checked`)) n++;
+  });
+  // Q2, Q3, Q6, Q7, Q10 — radio
+  ['q2','q3','q6','q7','q10'].forEach(name => {
+    if (document.querySelector(`input[name="${name}"]:checked`)) n++;
+  });
+  // Q4, Q12 — textarea
+  ['q4','q12'].forEach(id => {
+    if ((document.getElementById(id)?.value || '').trim().length > 0) n++;
+  });
+  // Q8, Q11 — scale
+  if (document.getElementById('q8-val').value) n++;
+  if (document.getElementById('q11-val').value) n++;
+  return n;
+}
+
+function updateProgress() {
+  const n = countAnswered();
+  const pct = Math.round((n / TOTAL) * 100);
+  document.getElementById('pbar').style.width = pct + '%';
+  document.getElementById('plabel').textContent = `${n} of ${TOTAL} answered`;
+}
+
+document.getElementById('survey').addEventListener('change', updateProgress);
+document.getElementById('survey').addEventListener('input', updateProgress);
+
+// ── Option highlight for radio/checkbox ───────────────────────────────
+document.querySelectorAll('.options').forEach(group => {
+  group.addEventListener('change', () => {
+    group.querySelectorAll('.option').forEach(opt => {
+      const inp = opt.querySelector('input');
+      opt.classList.toggle('selected', inp.checked);
+    });
+  });
+});
+
+// ── Scale buttons ──────────────────────────────────────────────────────
+function setupScale(scaleId, hiddenId) {
+  document.getElementById(scaleId).querySelectorAll('.scale-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById(scaleId).querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      document.getElementById(hiddenId).value = btn.dataset.val;
+      updateProgress();
+    });
+  });
+}
+setupScale('scale-q8', 'q8-val');
+setupScale('scale-q11', 'q11-val');
+
+// ── Submit ─────────────────────────────────────────────────────────────
+document.getElementById('survey').addEventListener('submit', e => {
+  e.preventDefault();
+
+  // Simple validation — ensure critical fields answered
+  const unanswered = [];
+  ['q2','q3','q6','q7','q10'].forEach(name => {
+    if (!document.querySelector(`input[name="${name}"]:checked`)) unanswered.push(name);
+  });
+  if (!document.getElementById('q4').value.trim()) unanswered.push('q4');
+  if (!document.getElementById('q12').value.trim()) unanswered.push('q12');
+  if (!document.getElementById('q8-val').value) unanswered.push('q8');
+  if (!document.getElementById('q11-val').value) unanswered.push('q11');
+
+  if (unanswered.length > 0) {
+    const cardId = 'card-' + unanswered[0];
+    document.getElementById(cardId)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById(cardId).style.borderColor = '#ef4444';
+    setTimeout(() => { document.getElementById(cardId).style.borderColor = ''; }, 3000);
+    alert(`Please answer all questions before submitting. (${unanswered.length} remaining)`);
+    return;
+  }
+
+  // Build summary
+  const getChecked = name => [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(i => i.value);
+  const getRadio = name => { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : '—'; };
+
+  const pyScale = { '1':'No experience','2':'Beginner','3':'Intermediate','4':'Advanced','5':'Expert' };
+  const llmScale = { '1':'No confidence','2':'Low','3':'Moderate','4':'High','5':'Fully confident' };
+  const readComf = { '1':'Not comfortable','2':'Somewhat comfortable','3':'Comfortable','4':'Very comfortable' };
+
+  const tools = getChecked('q1');
+  const toolStr = tools.length === 0 ? 'None' : tools.includes('none') ? 'None' : tools.join(', ');
+
+  const summary = [
+    ['Automation tools used', toolStr],
+    ['Years of automation experience', getRadio('q2').replace('none','None').replace('lt1','<1 yr').replace('gt5','>5 yrs')],
+    ['Most complex workflow built', getRadio('q3')],
+    ['Python proficiency (1–5)', (document.getElementById('q8-val').value || '—') + ' — ' + (pyScale[document.getElementById('q8-val').value] || '')],
+    ['LLM-app confidence (1–5)', (document.getElementById('q11-val').value || '—') + ' — ' + (llmScale[document.getElementById('q11-val').value] || '')],
+    ['Code-reading comfort', readComf[getRadio('q10')] || getRadio('q10')],
+  ];
+
+  const box = document.getElementById('summary-box');
+  summary.forEach(([label, val]) => {
+    const row = document.createElement('div');
+    row.className = 'summary-row';
+    row.innerHTML = `<span class="sr-label">${label}</span><span class="sr-val">${val}</span>`;
+    box.appendChild(row);
+  });
+
+  // Persist to localStorage
+  try {
+    const payload = {
+      timestamp: new Date().toISOString(),
+      q1: getChecked('q1'), q2: getRadio('q2'), q3: getRadio('q3'),
+      q4: document.getElementById('q4').value.trim(),
+      q5: getChecked('q5'), q6: getRadio('q6'), q7: getRadio('q7'),
+      q8: document.getElementById('q8-val').value,
+      q9: getChecked('q9'), q10: getRadio('q10'),
+      q11: document.getElementById('q11-val').value,
+      q12: document.getElementById('q12').value.trim(),
+    };
+    localStorage.setItem('ai_agents_baseline_survey', JSON.stringify(payload));
+  } catch(_) {}
+
+  document.getElementById('form-area').classList.add('hidden');
+  document.getElementById('thankyou').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
+</body>
+</html>
