@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Module 1 Quiz — AI Automation &amp; Agents</title>
+<style>
+:root{
+  --bg:#f0f4f8;--card:#fff;--primary:#1e40af;--primary-lt:#dbeafe;
+  --accent:#0ea5e9;--border:#cbd5e1;--text:#1e293b;--muted:#64748b;
+  --success:#16a34a;--success-lt:#dcfce7;--danger:#dc2626;--danger-lt:#fee2e2;
+  --warn:#d97706;--warn-lt:#fef3c7;--radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);padding:2rem 1rem;min-height:100vh;}
+.wrapper{max-width:820px;margin:0 auto;}
+
+/* HEADER */
+header{background:linear-gradient(135deg,#1e3a8a,#1e40af);color:#fff;border-radius:var(--radius);padding:2rem 2.5rem;margin-bottom:1.5rem;}
+header h1{font-size:1.45rem;font-weight:800;margin-bottom:.3rem;}
+header p{font-size:.88rem;opacity:.85;line-height:1.5;}
+.tags{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.9rem;}
+.tag{background:rgba(255,255,255,.18);border-radius:5px;padding:.2rem .7rem;font-size:.78rem;font-weight:700;letter-spacing:.04em;}
+
+/* PROGRESS */
+.prog-wrap{background:var(--border);border-radius:99px;height:7px;margin-bottom:.4rem;overflow:hidden;}
+.prog-bar{height:100%;background:var(--accent);border-radius:99px;transition:width .4s;}
+.prog-label{font-size:.78rem;color:var(--muted);text-align:right;margin-bottom:1.8rem;}
+
+/* SECTION HEADER */
+.sec-head{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);border-left:3px solid var(--primary);padding-left:.6rem;margin:2.2rem 0 .8rem;}
+
+/* CARD */
+.card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:1.5rem 1.8rem;margin-bottom:1.1rem;transition:border-color .2s;}
+.card:focus-within{border-color:var(--accent);}
+.card.correct{border-color:var(--success)!important;background:var(--success-lt);}
+.card.wrong{border-color:var(--danger)!important;background:var(--danger-lt);}
+
+/* Q LABEL */
+.qlabel{font-size:.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;display:flex;justify-content:space-between;}
+.lo-tag{background:var(--primary-lt);color:var(--primary);border-radius:4px;padding:.1rem .45rem;font-size:.68rem;font-weight:700;}
+.qtext{font-size:.97rem;font-weight:700;line-height:1.55;margin-bottom:1rem;}
+
+/* OPTIONS */
+.options{display:flex;flex-direction:column;gap:.5rem;}
+.opt{display:flex;align-items:flex-start;gap:.65rem;cursor:pointer;padding:.55rem .85rem;border-radius:7px;border:1.5px solid var(--border);transition:background .15s,border-color .15s;}
+.opt:hover:not(.locked){background:var(--primary-lt);border-color:var(--primary);}
+.opt input{margin-top:2px;accent-color:var(--primary);flex-shrink:0;width:15px;height:15px;}
+.opt span{font-size:.91rem;line-height:1.45;}
+.opt.chosen{background:var(--primary-lt);border-color:var(--primary);}
+.opt.correct-opt{background:var(--success-lt);border-color:var(--success);}
+.opt.wrong-opt{background:var(--danger-lt);border-color:var(--danger);}
+.opt.locked{cursor:default;}
+
+/* SEQUENCING */
+.seq-list{display:flex;flex-direction:column;gap:.45rem;user-select:none;}
+.seq-item{display:flex;align-items:center;gap:.7rem;padding:.6rem .9rem;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;cursor:grab;transition:box-shadow .15s,border-color .15s;}
+.seq-item:active{cursor:grabbing;box-shadow:0 4px 14px rgba(0,0,0,.12);}
+.seq-item.dragging{opacity:.45;}
+.seq-item.drag-over{border-color:var(--accent);background:var(--primary-lt);}
+.seq-item.locked-seq{cursor:default;}
+.handle{color:var(--muted);font-size:1rem;flex-shrink:0;}
+.seq-num{font-size:.75rem;font-weight:800;color:var(--primary);background:var(--primary-lt);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.seq-text{font-size:.9rem;line-height:1.4;}
+.seq-hint{font-size:.75rem;color:var(--muted);margin-bottom:.6rem;font-style:italic;}
+
+/* SHORT ANSWER */
+textarea{width:100%;border:1.5px solid var(--border);border-radius:7px;padding:.65rem .9rem;font-size:.92rem;font-family:inherit;resize:vertical;min-height:72px;color:var(--text);transition:border-color .2s;background:var(--bg);}
+textarea:focus{outline:none;border-color:var(--accent);background:#fff;}
+.word-count{font-size:.72rem;color:var(--muted);text-align:right;margin-top:.3rem;}
+.word-count.over{color:var(--danger);font-weight:700;}
+.model-answer{display:none;margin-top:.8rem;padding:.7rem 1rem;background:#f0fdf4;border:1px solid var(--success);border-radius:7px;font-size:.84rem;color:#166534;line-height:1.5;}
+.model-answer strong{display:block;margin-bottom:.2rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;}
+
+/* FEEDBACK */
+.feedback{display:none;margin-top:.75rem;padding:.65rem 1rem;border-radius:7px;font-size:.85rem;line-height:1.5;}
+.feedback.correct{background:var(--success-lt);color:#14532d;border:1px solid #86efac;}
+.feedback.wrong{background:var(--danger-lt);color:#7f1d1d;border:1px solid #fca5a5;}
+.feedback strong{font-weight:800;}
+
+/* SUBMIT */
+.submit-wrap{margin-top:2.2rem;text-align:center;}
+button.submit{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:.85rem 3rem;font-size:1rem;font-weight:800;cursor:pointer;transition:background .2s;letter-spacing:.02em;}
+button.submit:hover{background:#1e3a8a;}
+button.submit:disabled{opacity:.45;cursor:not-allowed;}
+
+/* RESULTS */
+#results{display:none;background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:2.5rem;text-align:center;margin-top:1.5rem;}
+#results h2{font-size:2rem;font-weight:800;color:var(--primary);margin-bottom:.3rem;}
+#results .grade{font-size:1rem;color:var(--muted);margin-bottom:1.5rem;}
+.score-ring{width:120px;height:120px;margin:0 auto 1.5rem;position:relative;}
+.score-ring svg{transform:rotate(-90deg);}
+.score-ring .pct-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.6rem;font-weight:800;color:var(--primary);}
+.breakdown{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin:1.2rem 0 1.5rem;text-align:left;}
+.bd-item{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.8rem 1rem;}
+.bd-item .bd-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700;margin-bottom:.2rem;}
+.bd-item .bd-val{font-size:1.1rem;font-weight:800;color:var(--primary);}
+button.retry{background:var(--bg);border:1.5px solid var(--primary);color:var(--primary);border-radius:8px;padding:.7rem 2rem;font-size:.92rem;font-weight:700;cursor:pointer;margin-top:.5rem;}
+button.retry:hover{background:var(--primary-lt);}
+
+code{background:#f1f5f9;border:1px solid var(--border);border-radius:4px;padding:.05rem .3rem;font-size:.85em;font-family:'Courier New',monospace;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<header>
+  <h1>Module 1 Quiz</h1>
+  <p>AI Automation &amp; Agents — Graded Assessment</p>
+  <div class="tags">
+    <span class="tag">15 Questions</span>
+    <span class="tag">LO 1.1 · LO 1.2</span>
+    <span class="tag">4 Question Types</span>
+    <span class="tag">~20 Minutes</span>
+  </div>
+</header>
+
+<div class="prog-wrap"><div class="prog-bar" id="pbar" style="width:0%"></div></div>
+<div class="prog-label" id="plabel">0 of 15 answered</div>
+
+<form id="quiz" novalidate>
+
+<!-- ═══════════════════════════════════════════════
+     PART A — MULTIPLE-CHOICE: DEFINITIONS (Q1–Q6)
+════════════════════════════════════════════════ -->
+<div class="sec-head">Part A — Multiple-Choice: Definitions &amp; Concepts (6 questions)</div>
+
+<!-- Q1 -->
+<div class="card" id="card-1">
+  <div class="qlabel"><span>Question 1 of 15</span><span class="lo-tag">LO 1.1</span></div>
+  <div class="qtext">Which of the following is the most complete and precise definition of an <em>AI agent</em>?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q1" value="A"/><span>A. Any software program that uses machine learning to classify data</span></label>
+    <label class="opt"><input type="radio" name="q1" value="B"/><span>B. A system that perceives its environment, reasons about a goal, selects actions, and executes them in a loop — potentially without step-by-step human direction</span></label>
+    <label class="opt"><input type="radio" name="q1" value="C"/><span>C. A large language model that generates text in response to user prompts</span></label>
+    <label class="opt"><input type="radio" name="q1" value="D"/><span>D. A rule-based chatbot that follows a predefined decision tree</span></label>
+  </div>
+  <div class="feedback" id="fb-1"></div>
+</div>
+
+<!-- Q2 -->
+<div class="card" id="card-2">
+  <div class="qlabel"><span>Question 2 of 15</span><span class="lo-tag">LO 1.1</span></div>
+  <div class="qtext">The term <em>autonomy</em> in the context of AI agents refers to:</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q2" value="A"/><span>A. The ability to learn new skills without any training data</span></label>
+    <label class="opt"><input type="radio" name="q2" value="B"/><span>B. The degree to which a system selects and executes actions based on its own reasoning rather than explicit human instructions at each step</span></label>
+    <label class="opt"><input type="radio" name="q2" value="C"/><span>C. The use of multiple models running in parallel on separate hardware</span></label>
+    <label class="opt"><input type="radio" name="q2" value="D"/><span>D. A system that operates without any internet connection</span></label>
+  </div>
+  <div class="feedback" id="fb-2"></div>
+</div>
+
+<!-- Q3 -->
+<div class="card" id="card-3">
+  <div class="qlabel"><span>Question 3 of 15</span><span class="lo-tag">LO 1.1</span></div>
+  <div class="qtext">Which statement best characterizes the <em>boundary</em> between a conversational AI (chatbot) and an AI agent?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q3" value="A"/><span>A. Agents are always more accurate than chatbots</span></label>
+    <label class="opt"><input type="radio" name="q3" value="B"/><span>B. Chatbots generate single-turn text responses; agents maintain state and execute actions in the external environment across multiple steps</span></label>
+    <label class="opt"><input type="radio" name="q3" value="C"/><span>C. Chatbots can call external tools, whereas agents cannot</span></label>
+    <label class="opt"><input type="radio" name="q3" value="D"/><span>D. The distinction is purely a marketing term with no technical basis</span></label>
+  </div>
+  <div class="feedback" id="fb-3"></div>
+</div>
+
+<!-- Q4 -->
+<div class="card" id="card-4">
+  <div class="qlabel"><span>Question 4 of 15</span><span class="lo-tag">LO 1.2</span></div>
+  <div class="qtext">In the automation paradigm taxonomy, <em>Robotic Process Automation (RPA)</em> is best described as:</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q4" value="A"/><span>A. Training a neural network to recognize screen elements and predict user intent</span></label>
+    <label class="opt"><input type="radio" name="q4" value="B"/><span>B. Rule-based mimicry of human UI interactions — clicks, form fills, and data transfers — without understanding content</span></label>
+    <label class="opt"><input type="radio" name="q4" value="C"/><span>C. An orchestration layer that routes API calls between microservices</span></label>
+    <label class="opt"><input type="radio" name="q4" value="D"/><span>D. A natural language interface that lets non-technical users write automation scripts</span></label>
+  </div>
+  <div class="feedback" id="fb-4"></div>
+</div>
+
+<!-- Q5 -->
+<div class="card" id="card-5">
+  <div class="qlabel"><span>Question 5 of 15</span><span class="lo-tag">LO 1.2</span></div>
+  <div class="qtext"><em>Workflow orchestration</em> platforms (e.g., Zapier, n8n, Apache Airflow) differ from AI agents primarily because they:</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q5" value="A"/><span>A. Cannot connect to external services or APIs</span></label>
+    <label class="opt"><input type="radio" name="q5" value="B"/><span>B. Execute explicitly defined, human-authored step sequences and do not reason adaptively about which action to take next</span></label>
+    <label class="opt"><input type="radio" name="q5" value="C"/><span>C. Are always slower and more expensive than AI agents</span></label>
+    <label class="opt"><input type="radio" name="q5" value="D"/><span>D. Require programming in a low-level language such as C or Rust</span></label>
+  </div>
+  <div class="feedback" id="fb-5"></div>
+</div>
+
+<!-- Q6 -->
+<div class="card" id="card-6">
+  <div class="qlabel"><span>Question 6 of 15</span><span class="lo-tag">LO 1.1</span></div>
+  <div class="qtext">The concept of <em>tool use</em> in an LLM-powered agent means the model can:</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q6" value="A"/><span>A. Generate Python code that a human must then copy and execute manually</span></label>
+    <label class="opt"><input type="radio" name="q6" value="B"/><span>B. Invoke external functions — such as web search, code execution, or database queries — and receive their results as part of its reasoning context</span></label>
+    <label class="opt"><input type="radio" name="q6" value="C"/><span>C. Fine-tune itself on new data without restarting</span></label>
+    <label class="opt"><input type="radio" name="q6" value="D"/><span>D. Browse the web through a conventional browser GUI controlled by mouse movements alone</span></label>
+  </div>
+  <div class="feedback" id="fb-6"></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     PART B — SCENARIO CLASSIFICATION (Q7–Q10)
+════════════════════════════════════════════════ -->
+<div class="sec-head">Part B — Scenario Classification (4 questions)</div>
+
+<!-- Q7 -->
+<div class="card" id="card-7">
+  <div class="qlabel"><span>Question 7 of 15</span><span class="lo-tag">LO 1.2</span></div>
+  <div class="qtext"><strong>Scenario:</strong> Every weekday at 9 AM, a script copies rows from a Google Sheet into a Salesforce CRM record. If a field is blank, the script skips that row. No LLM is involved. Which automation paradigm does this represent?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q7" value="A"/><span>A. AI agent</span></label>
+    <label class="opt"><input type="radio" name="q7" value="B"/><span>B. Workflow orchestration / scheduled automation</span></label>
+    <label class="opt"><input type="radio" name="q7" value="C"/><span>C. Robotic Process Automation (RPA)</span></label>
+    <label class="opt"><input type="radio" name="q7" value="D"/><span>D. Multi-agent system</span></label>
+  </div>
+  <div class="feedback" id="fb-7"></div>
+</div>
+
+<!-- Q8 -->
+<div class="card" id="card-8">
+  <div class="qlabel"><span>Question 8 of 15</span><span class="lo-tag">LO 1.1 · LO 1.2</span></div>
+  <div class="qtext"><strong>Scenario:</strong> A system receives a user request to "research competitors and draft a report." It uses an LLM to plan subtasks, calls a web-search tool, retrieves pages, synthesizes findings, and writes a document — all without further human input. Which paradigm best describes this?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q8" value="A"/><span>A. RPA</span></label>
+    <label class="opt"><input type="radio" name="q8" value="B"/><span>B. Workflow orchestration</span></label>
+    <label class="opt"><input type="radio" name="q8" value="C"/><span>C. AI agent</span></label>
+    <label class="opt"><input type="radio" name="q8" value="D"/><span>D. Supervised machine learning pipeline</span></label>
+  </div>
+  <div class="feedback" id="fb-8"></div>
+</div>
+
+<!-- Q9 -->
+<div class="card" id="card-9">
+  <div class="qlabel"><span>Question 9 of 15</span><span class="lo-tag">LO 1.2</span></div>
+  <div class="qtext"><strong>Scenario:</strong> A bot logs into a legacy HR portal using stored credentials, navigates through fixed menu paths, copies employee IDs from a table, and pastes them into a spreadsheet. Which paradigm applies?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q9" value="A"/><span>A. AI agent</span></label>
+    <label class="opt"><input type="radio" name="q9" value="B"/><span>B. API integration</span></label>
+    <label class="opt"><input type="radio" name="q9" value="C"/><span>C. Robotic Process Automation (RPA)</span></label>
+    <label class="opt"><input type="radio" name="q9" value="D"/><span>D. Reinforcement learning</span></label>
+  </div>
+  <div class="feedback" id="fb-9"></div>
+</div>
+
+<!-- Q10 -->
+<div class="card" id="card-10">
+  <div class="qlabel"><span>Question 10 of 15</span><span class="lo-tag">LO 1.1</span></div>
+  <div class="qtext"><strong>Scenario:</strong> A user asks a system, "Book me a flight to NYC next Friday under $400." The system queries flight APIs, evaluates options against the constraint, selects the best match, and confirms the booking. Which characteristic most clearly makes this an <em>AI agent</em> rather than a workflow?</div>
+  <div class="options">
+    <label class="opt"><input type="radio" name="q10" value="A"/><span>A. It uses an API</span></label>
+    <label class="opt"><input type="radio" name="q10" value="B"/><span>B. It reasons about the constraint and selects an action without a predefined step-by-step script</span></label>
+    <label class="opt"><input type="radio" name="q10" value="C"/><span>C. It sends an email confirmation</span></label>
+    <label class="opt"><input type="radio" name="q10" value="D"/><span>D. It runs on a cloud server</span></label>
+  </div>
+  <div class="feedback" id="fb-10"></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     PART C — SEQUENCING (Q11–Q13)
+════════════════════════════════════════════════ -->
+<div class="sec-head">Part C — Sequencing (3 questions) — drag items into correct order</div>
+
+<!-- Q11 -->
+<div class="card" id="card-11">
+  <div class="qlabel"><span>Question 11 of 15</span><span class="lo-tag">LO 1.1</span></div>
+  <div class="qtext">Arrange the steps of the canonical <em>agent perception–reasoning–action loop</em> in correct order (1 = first).</div>
+  <div class="seq-hint">Drag and drop to reorder.</div>
+  <div class="seq-list" id="seq-11" data-answer="Observe environment,Formulate goal or retrieve task context,Reason and select action,Execute action via tool or effector,Receive feedback / updated observation">
+    <div class="seq-item" draggable="true" data-text="Formulate goal or retrieve task context"><span class="handle">⠿</span><span class="seq-num">–</span><span class="seq-text">Formulate goal or retrieve task context</span></div>
+    <div class="seq-item" draggable="true" data-text="Execute action via tool or effector"><span class="handle">⠿</span><span class="seq-num">–</span><span class="seq-text">Execute action via tool or effector</span></div>
+    <div class="seq-item" draggable="true" data-text="Observe environment"><span class="handle">⠿</span><span class="seq-num">–</span><span class="seq-text">Observe environment</span></div>
+    <div class="seq-item" draggable="true" data-text="Receive feedback / updated observation"><span class="handle">⠿</span><span class="seq-num">–</span><span class="seq-text">Receive feedback / updated observation</span></div>
+    <div class="seq-item" draggable="true" data-text="Reason and select action"><span class="handle">⠿</span><span class="seq-num">–</span><span class="seq-text">Reason and select action</span></div>
+  </div>
+  <div class="feedback" id="fb-11"></div>
+</div>
+
+<!-- Q12 -->
+<div class="card" id="card-12">
+  <div class="qlabel"><span>Question 12 of 15</span><span class="lo-tag">LO 1.2</span></div>
+  <div class="qtext">Rank these automation paradigms from <em>least autonomous</em> (1) to <em>most autonomous</em> (5).</div>
+  <div class="seq-hint">Drag and drop to reorder. #1 = least autonomous.</div>
+  <div class="seq-list" id="seq-12" data-answer="Cron job / scheduled script,RPA (UI-mimicry bots),Workflow orchestration with branching logic,Single-step LLM with tool call,Autonomous multi-agent system">
+    <div class="seq-item" draggable="true" data-text="Workflow orchestration with branching logic"><span class="handle">⠿</span><span class="seq-num">–</span><span class="seq-text">Workflow orchestration with branching logic</span></div>
+    <div class="seq-item" draggable="true" data-text="Autonomous multi-agent system"><span class="handle">⠿</span><span class="seq-num">–</span><span class="seq-text">Autonomous multi-agent system</span></div>
+    <div class="seq-item" draggable="true" data-text="Single-step LLM with tool call"><span class="handle">⠿</span><span class="seq-num">–</span><span class="seq-text">Single-step LLM with tool call</span></div>
+    <div class="seq-item" draggable="true" data-text="Cron job / scheduled script"><span class="handle">⠿</span><span class="seq-num">–</span><span class="seq-text">Cron job / scheduled script</span></div>
+    <div class="seq-item" draggable="true" data-text="RPA (UI-mimicry bots)"><span class="handle">⠿</span><span class="seq-num">–</span><span class="seq-text">RPA (UI-mimicry bots)</span></div>
+  </div>
+  <div class="feedback" id="fb-12"></div>
+</div>
+
+<!-- Q13 -->
+<div class="card" id="card-13">
+  <div class="qlabel"><span>Question 13 of 15</span><span class="lo-tag">LO 1.1</span></div>
+  <div class="qtext">A developer is building an LLM agent that books travel. Arrange these <em>design decisions</em> in the recommended implementation order.</div>
+  <div class="seq-hint">Drag and drop to reorder. #1 = first decision to make.</div>
+  <div class="seq-list" id="seq-13" data-answer="Define the agent's goal and success criteria,Identify which tools the agent needs (APIs, functions),Design the memory and context management strategy,Implement the reasoning prompt and tool-calling logic,Test and evaluate agent behavior on edge cases">
+    <div class="seq-item" draggable="true" data-text="Implement the reasoning prompt and tool-calling logic"><span class="handle">⠿</span><span class="seq-num">–</span><span class="seq-text">Implement the reasoning prompt and tool-calling logic</span></div>
+    <div class="seq-item" draggable="true" data-text="Define the agent's goal and success criteria"><span class="handle">⠿</span><span class="seq-num">–</span><span class="seq-text">Define the agent's goal and success criteria</span></div>
+    <div class="seq-item" draggable="true" data-text="Test and evaluate agent behavior on edge cases"><span class="handle">⠿</span><span class="seq-num">–</span><span class="seq-text">Test and evaluate agent behavior on edge cases</span></div>
+    <div class="seq-item" draggable="true" data-text="Identify which tools the agent needs (APIs, functions)"><span class="handle">⠿</span><span class="seq-num">–</span><span class="seq-text">Identify which tools the agent needs (APIs, functions)</span></div>
+    <div class="seq-item" draggable="true" data-text="Design the memory and context management strategy"><span class="handle">⠿</span><span class="seq-num">–</span><span class="seq-text">Design the memory and context management strategy</span></div>
+  </div>
+  <div class="feedback" id="fb-13"></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     PART D — SHORT-ANSWER COMPARISONS (Q14–Q15)
+════════════════════════════════════════════════ -->
+<div class="sec-head">Part D — Short-Answer Comparisons (2 questions · max 20 words each)</div>
+
+<!-- Q14 -->
+<div class="card" id="card-14">
+  <div class="qlabel"><span>Question 14 of 15</span><span class="lo-tag">LO 1.2</span></div>
+  <div class="qtext">In ≤ 20 words, state the key trade-off that makes <em>RPA preferable to an AI agent</em> for a given task.</div>
+  <textarea name="q14" id="q14" placeholder="Your answer (max 20 words)…"></textarea>
+  <div class="word-count" id="wc-14">0 / 20 words</div>
+  <div class="model-answer" id="ma-14">
+    <strong>Model Answer</strong>
+    RPA offers higher reliability and auditability for deterministic, structured tasks where reasoning and adaptability are unnecessary.
+  </div>
+</div>
+
+<!-- Q15 -->
+<div class="card" id="card-15">
+  <div class="qlabel"><span>Question 15 of 15</span><span class="lo-tag">LO 1.1 · LO 1.2</span></div>
+  <div class="qtext">In ≤ 20 words, explain the key trade-off that makes <em>workflow orchestration preferable to an AI agent</em> in production environments.</div>
+  <textarea name="q15" id="q15" placeholder="Your answer (max 20 words)…"></textarea>
+  <div class="word-count" id="wc-15">0 / 20 words</div>
+  <div class="model-answer" id="ma-15">
+    <strong>Model Answer</strong>
+    Orchestration is predictable, explainable, and cheaper; AI agents introduce unpredictability and cost that are unjustified when logic is fully known.
+  </div>
+</div>
+
+<div class="submit-wrap">
+  <button type="submit" class="submit" id="submit-btn">Submit &amp; Grade Quiz</button>
+</div>
+
+</form>
+
+<!-- RESULTS -->
+<div id="results">
+  <div class="score-ring">
+    <svg width="120" height="120" viewBox="0 0 120 120">
+      <circle cx="60" cy="60" r="52" fill="none" stroke="#e2e8f0" stroke-width="10"/>
+      <circle id="score-arc" cx="60" cy="60" r="52" fill="none" stroke="#1e40af" stroke-width="10"
+              stroke-dasharray="326.7" stroke-dashoffset="326.7" style="transition:stroke-dashoffset 1s ease;"/>
+    </svg>
+    <div class="pct-label" id="score-pct">0%</div>
+  </div>
+  <h2 id="score-label">–</h2>
+  <p class="grade" id="score-sub"></p>
+  <div class="breakdown" id="breakdown"></div>
+  <p style="font-size:.83rem;color:var(--muted);margin-bottom:1rem;">Short-answer questions are self-assessed — compare your responses to the model answers shown inline.</p>
+  <button class="retry" onclick="location.reload()">Retake Quiz</button>
+</div>
+
+</div><!-- /wrapper -->
+<script>
+// ─── Answer key ───────────────────────────────────────────────────────
+const MC_ANSWERS = {q1:'B',q2:'B',q3:'B',q4:'B',q5:'B',q6:'B',q7:'B',q8:'C',q9:'C',q10:'B'};
+
+const FEEDBACK = {
+  q1:{
+    B:"✓ Correct. The perception–reason–act loop with goal-directedness and minimal per-step human direction is the defining characteristic of an AI agent.",
+    wrong:"✗ Incorrect. Correct answer: B. An AI agent is defined by its perception–reason–act loop and goal-directed autonomy, not merely by its use of ML or language generation."
+  },
+  q2:{
+    B:"✓ Correct. Autonomy is about the degree of self-directed action selection, not hardware independence or parallel execution.",
+    wrong:"✗ Incorrect. Correct answer: B. Autonomy refers specifically to the ratio of self-directed to human-directed action selection within the system."
+  },
+  q3:{
+    B:"✓ Correct. The key distinction is stateful, multi-step action in the environment vs. stateless single-turn text generation.",
+    wrong:"✗ Incorrect. Correct answer: B. The core technical boundary is between reactive, single-turn text generation (chatbot) and stateful, action-taking loops (agent)."
+  },
+  q4:{
+    B:"✓ Correct. RPA mimics human UI interactions through deterministic rules — it does not understand or reason about the content it processes.",
+    wrong:"✗ Incorrect. Correct answer: B. RPA is distinguished by UI-level mimicry via fixed rules, with no content comprehension or adaptive reasoning."
+  },
+  q5:{
+    B:"✓ Correct. Orchestration platforms execute human-specified graphs of steps; the 'intelligence' about what to do next resides in the human-authored workflow definition, not the system.",
+    wrong:"✗ Incorrect. Correct answer: B. The critical distinction is adaptive action selection: orchestrators follow predefined graphs; agents reason about what to do next."
+  },
+  q6:{
+    B:"✓ Correct. Tool use means the LLM can call external functions mid-generation and incorporate their outputs into its context and continued reasoning.",
+    wrong:"✗ Incorrect. Correct answer: B. Tool use is the runtime invocation of external functions with results fed back into the model's context — distinct from code generation alone."
+  },
+  q7:{
+    B:"✓ Correct. A scheduled, rule-based data transfer with explicit conditional logic (skip blank rows) is classic workflow/scheduled automation — no AI reasoning involved.",
+    wrong:"✗ Incorrect. Correct answer: B. The time-triggered, rule-based nature with API-level data movement (not UI-mimicry) places this squarely in scheduled workflow automation."
+  },
+  q8:{
+    C:"✓ Correct. LLM-driven planning, adaptive tool selection, and multi-step execution without further human input are the hallmarks of an AI agent.",
+    wrong:"✗ Incorrect. Correct answer: C. Autonomous goal decomposition, tool invocation, and synthesis without a predefined step script define an AI agent, not a workflow or RPA."
+  },
+  q9:{
+    C:"✓ Correct. Logging into a UI, navigating fixed menu paths, and copying data via screen interaction defines RPA — it mimics a human operator without understanding content.",
+    wrong:"✗ Incorrect. Correct answer: C. UI-level navigation through fixed paths to extract data — without API access or reasoning — is the canonical description of RPA."
+  },
+  q10:{
+    B:"✓ Correct. The defining agent property here is constraint-based reasoning and autonomous option selection — not just API usage or cloud execution.",
+    wrong:"✗ Incorrect. Correct answer: B. What makes this an agent is that it reasons about the $400 constraint to select among options, rather than following a predefined decision tree."
+  }
+};
+
+const SEQ_ANSWERS = {
+  11:["Observe environment","Formulate goal or retrieve task context","Reason and select action","Execute action via tool or effector","Receive feedback / updated observation"],
+  12:["Cron job / scheduled script","RPA (UI-mimicry bots)","Workflow orchestration with branching logic","Single-step LLM with tool call","Autonomous multi-agent system"],
+  13:["Define the agent's goal and success criteria","Identify which tools the agent needs (APIs, functions)","Design the memory and context management strategy","Implement the reasoning prompt and tool-calling logic","Test and evaluate agent behavior on edge cases"]
+};
+
+const SEQ_FEEDBACK = {
+  11:{
+    correct:"✓ Correct. The canonical loop: Observe → Goal/context → Reason → Act → Feedback — then back to Observe.",
+    wrong:`✗ Not quite. Correct order: 1) Observe environment → 2) Formulate goal/retrieve context → 3) Reason and select action → 4) Execute action → 5) Receive feedback. The loop then repeats from step 1.`
+  },
+  12:{
+    correct:"✓ Correct. Autonomy spectrum: scheduled script (none) → RPA (scripted UI) → orchestration (branching logic) → single LLM tool call → multi-agent system (highest).",
+    wrong:"✗ Not quite. Correct order (least → most autonomous): Cron script → RPA → Workflow orchestration → Single-step LLM → Autonomous multi-agent system."
+  },
+  13:{
+    correct:"✓ Correct. Goal definition drives every subsequent decision; tool identification precedes memory design, which precedes implementation, which precedes testing.",
+    wrong:"✗ Not quite. Correct order: 1) Define goal & success criteria → 2) Identify tools → 3) Memory/context design → 4) Implement prompt & tool logic → 5) Test & evaluate."
+  }
+};
+
+// ─── Progress tracking ─────────────────────────────────────────────────
+let answered = new Set();
+function updateProg(){
+  const n = answered.size;
+  document.getElementById('pbar').style.width=(n/15*100)+'%';
+  document.getElementById('plabel').textContent=`${n} of 15 answered`;
+}
+
+// ─── Radio tracking ────────────────────────────────────────────────────
+document.querySelectorAll('input[type="radio"]').forEach(r=>{
+  r.addEventListener('change',()=>{
+    const q=r.name;
+    answered.add(q);
+    updateProg();
+    document.querySelectorAll(`.opt input[name="${q}"]`).forEach(i=>{
+      i.closest('.opt').classList.toggle('chosen', i.checked);
+    });
+  });
+});
+
+// ─── Textarea word count ───────────────────────────────────────────────
+['14','15'].forEach(n=>{
+  const ta=document.getElementById('q'+n);
+  const wc=document.getElementById('wc-'+n);
+  ta.addEventListener('input',()=>{
+    const words=ta.value.trim().split(/\s+/).filter(w=>w.length>0);
+    const cnt=ta.value.trim()===''?0:words.length;
+    wc.textContent=`${cnt} / 20 words`;
+    wc.classList.toggle('over', cnt>20);
+    if(cnt>0) answered.add('q'+n); else answered.delete('q'+n);
+    updateProg();
+  });
+});
+
+// ─── Drag-and-drop sequencing ──────────────────────────────────────────
+let dragSrc=null;
+function initDrag(listEl){
+  function getItems(){ return [...listEl.querySelectorAll('.seq-item')]; }
+  function updateNums(){
+    getItems().forEach((item,i)=>{
+      item.querySelector('.seq-num').textContent=i+1;
+    });
+  }
+  updateNums();
+  listEl.addEventListener('dragstart',e=>{
+    dragSrc=e.target.closest('.seq-item');
+    if(!dragSrc) return;
+    dragSrc.classList.add('dragging');
+    e.dataTransfer.effectAllowed='move';
+    answered.add('seq-'+listEl.id.split('-')[1]);
+    updateProg();
+  });
+  listEl.addEventListener('dragend',e=>{
+    dragSrc?.classList.remove('dragging');
+    listEl.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
+    dragSrc=null;
+    updateNums();
+  });
+  listEl.addEventListener('dragover',e=>{
+    e.preventDefault();
+    const target=e.target.closest('.seq-item');
+    if(!target||target===dragSrc) return;
+    listEl.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
+    target.classList.add('drag-over');
+    const items=getItems();
+    const srcIdx=items.indexOf(dragSrc);
+    const tgtIdx=items.indexOf(target);
+    if(srcIdx<tgtIdx) target.after(dragSrc); else target.before(dragSrc);
+    updateNums();
+  });
+  listEl.addEventListener('drop',e=>{ e.preventDefault(); });
+}
+['seq-11','seq-12','seq-13'].forEach(id=>initDrag(document.getElementById(id)));
+
+// ─── Submit & grade ────────────────────────────────────────────────────
+document.getElementById('quiz').addEventListener('submit',e=>{
+  e.preventDefault();
+  let mcScore=0, seqScore=0;
+  const locked=(el)=>{ el.setAttribute('disabled',''); el.classList.add('locked'); };
+
+  // Grade MC Q1–Q10
+  Object.entries(MC_ANSWERS).forEach(([q,correct])=>{
+    const sel=document.querySelector(`input[name="${q}"]:checked`);
+    const card=document.getElementById('card-'+q.replace('q',''));
+    const fb=document.getElementById('fb-'+q.replace('q',''));
+    fb.style.display='block';
+    document.querySelectorAll(`input[name="${q}"]`).forEach(inp=>{
+      locked(inp);
+      const opt=inp.closest('.opt');
+      opt.classList.add('locked');
+      if(inp.value===correct) opt.classList.add('correct-opt');
+    });
+    if(sel&&sel.value===correct){
+      mcScore++;
+      card.classList.add('correct');
+      fb.className='feedback correct';
+      fb.innerHTML=`<strong>Correct.</strong> ${FEEDBACK[q]?.[correct]||''}`;
+    } else {
+      card.classList.add('wrong');
+      fb.className='feedback wrong';
+      fb.innerHTML=`<strong>Incorrect.</strong> ${FEEDBACK[q]?.wrong||'Correct answer: '+correct}`;
+      if(sel) sel.closest('.opt').classList.add('wrong-opt');
+    }
+  });
+
+  // Grade Sequencing Q11–Q13
+  [11,12,13].forEach(n=>{
+    const listEl=document.getElementById('seq-'+n);
+    const items=[...listEl.querySelectorAll('.seq-item')];
+    const userOrder=items.map(i=>i.dataset.text);
+    const correct=SEQ_ANSWERS[n];
+    const isCorrect=userOrder.every((v,i)=>v===correct[i]);
+    items.forEach(item=>{ item.setAttribute('draggable','false'); item.classList.add('locked-seq'); item.querySelector('.handle').style.opacity='.3'; });
+    const card=document.getElementById('card-'+n);
+    const fb=document.getElementById('fb-'+n);
+    fb.style.display='block';
+    if(isCorrect){
+      seqScore++;
+      card.classList.add('correct');
+      fb.className='feedback correct';
+      fb.innerHTML=`<strong>Correct.</strong> ${SEQ_FEEDBACK[n].correct}`;
+    } else {
+      card.classList.add('wrong');
+      fb.className='feedback wrong';
+      fb.innerHTML=`<strong>Incorrect.</strong> ${SEQ_FEEDBACK[n].wrong}`;
+    }
+  });
+
+  // Reveal model answers for short answers
+  ['14','15'].forEach(n=>{
+    document.getElementById('q'+n).setAttribute('disabled','');
+    document.getElementById('ma-'+n).style.display='block';
+  });
+
+  // Show results
+  const autoTotal=mcScore+seqScore; // out of 13
+  const autoMax=13;
+  const pct=Math.round(autoTotal/autoMax*100);
+
+  document.getElementById('quiz').style.display='none';
+  const res=document.getElementById('results');
+  res.style.display='block';
+  res.scrollIntoView({behavior:'smooth'});
+
+  // Animate ring
+  const circ=326.7;
+  setTimeout(()=>{
+    document.getElementById('score-arc').style.strokeDashoffset=circ-(circ*pct/100);
+    document.getElementById('score-pct').textContent=pct+'%';
+  },200);
+
+  const grade= pct>=90?'A — Excellent':pct>=80?'B — Proficient':pct>=70?'C — Developing':pct>=60?'D — Needs Review':'F — Re-study Module 1';
+  document.getElementById('score-label').textContent=`${autoTotal} / ${autoMax} (auto-scored)`;
+  document.getElementById('score-sub').textContent=grade+' · Short-answer questions (Q14–Q15) are self-assessed below.';
+
+  const bd=document.getElementById('breakdown');
+  const rows=[
+    ['MC Definitions (Q1–6)',`${Object.entries(MC_ANSWERS).filter(([q])=>parseInt(q.replace('q',''))<=6).filter(([q,c])=>{ const el=document.querySelector(`input[name="${q}"]:checked`); return el&&el.value===c; }).length} / 6`],
+    ['Scenario Classification (Q7–10)',`${Object.entries(MC_ANSWERS).filter(([q])=>parseInt(q.replace('q',''))>=7).filter(([q,c])=>{ const el=document.querySelector(`input[name="${q}"]:checked`); return el&&el.value===c; }).length} / 4`],
+    ['Sequencing (Q11–13)',`${seqScore} / 3`],
+    ['Short-Answer (Q14–15)','Self-assessed'],
+  ];
+  rows.forEach(([label,val])=>{
+    const div=document.createElement('div');
+    div.className='bd-item';
+    div.innerHTML=`<div class="bd-label">${label}</div><div class="bd-val">${val}</div>`;
+    bd.appendChild(div);
+  });
+
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+</script>
+</body>
+</html>
